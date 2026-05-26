@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sit, Sip & Bite – Full Menu. Coffee, croissants and sandwiches. Prices in BWP." />
+  <title>Menu | Sit, Sip &amp; Bite</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ==============================
+       TOKENS & RESET
+       ============================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #1A0F05;
+      --brown:      #4A2810;
+      --mid:        #7A4E2D;
+      --warm:       #B07040;
+      --gold:       #C8973A;
+      --gold-lt:    #E2B96A;
+      --cream:      #F7F0E6;
+      --cream-lt:   #FBF7F2;
+      --parchment:  #EFE4D0;
+      --rule:       rgba(74,40,16,0.18);
+      --serif:      'Cormorant Garamond', Georgia, serif;
+      --sans:       'Jost', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream-lt);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    img { display: block; max-width: 100%; }
+    a   { text-decoration: none; color: inherit; }
+
+    /* ==============================
+       BACKGROUND TEXTURE
+       ============================== */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ==============================
+       NAV BAR
+       ============================== */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--brown);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 62px;
+      box-shadow: 0 2px 20px rgba(26,15,5,0.25);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      color: var(--gold-lt);
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .nav-logo svg { flex-shrink: 0; }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: rgba(247,240,230,0.7);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--gold-lt); }
+
+    /* ==============================
+       MENU HERO HEADER
+       ============================== */
+    .menu-header {
+      position: relative;
+      background: var(--brown);
+      overflow: hidden;
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+    }
+
+    .menu-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=1400&q=80');
+      background-size: cover;
+      background-position: center 60%;
+      opacity: 0.22;
+    }
+
+    .menu-header-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .menu-header-eyebrow {
+      display: inline-block;
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      border-top: 1px solid var(--gold);
+      border-bottom: 1px solid var(--gold);
+      padding: 5px 16px;
+      margin-bottom: 1.4rem;
+    }
+
+    .menu-header h1 {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 300;
+      color: #fff;
+      line-height: 1.05;
+      letter-spacing: -0.5px;
+      margin-bottom: 1rem;
+    }
+
+    .menu-header h1 em {
+      font-style: italic;
+      color: var(--gold-lt);
+    }
+
+    .menu-header p {
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      color: rgba(247,240,230,0.65);
+      letter-spacing: 0.5px;
+    }
+
+    /* Ornamental divider */
+    .orn {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      justify-content: center;
+      margin: 1.5rem auto;
+    }
+    .orn-line { flex: 1; max-width: 80px; height: 1px; background: var(--gold); opacity: 0.6; }
+    .orn-diamond {
+      width: 8px; height: 8px;
+      background: var(--gold);
+      transform: rotate(45deg);
+    }
+
+    /* ==============================
+       LAYOUT WRAPPER
+       ============================== */
+    .menu-body {
+      position: relative;
+      z-index: 1;
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem 5rem;
+    }
+
+    /* ==============================
+       CATEGORY SECTION
+       ============================== */
+    .menu-section {
+      margin-bottom: 4rem;
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .menu-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .section-head-img {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--parchment);
+      box-shadow: 0 4px 16px rgba(74,40,16,0.2);
+      flex-shrink: 0;
+    }
+
+    .section-head-text {}
+
+    .section-label {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.2rem;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      font-weight: 400;
+      color: var(--brown);
+      line-height: 1;
+    }
+
+    .section-rule {
+      border: none;
+      border-top: 1px solid var(--rule);
+      margin-bottom: 1.6rem;
+    }
+
+    /* ==============================
+       ITEM CARDS GRID
+       ============================== */
+    .items-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.1rem;
+    }
+
+    .item-card {
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      align-items: stretch;
+      box-shadow: 0 2px 14px rgba(74,40,16,0.07);
+      transition: box-shadow 0.25s, transform 0.25s;
+      border: 1px solid rgba(200,151,58,0.1);
+    }
+
+    .item-card:hover {
+      box-shadow: 0 8px 32px rgba(74,40,16,0.14);
+      transform: translateY(-3px);
+    }
+
+    .item-card-img {
+      width: 88px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .item-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+
+    .item-card:hover .item-card-img img { transform: scale(1.08); }
+
+    .item-card-body {
+      padding: 1rem 1.1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.25rem;
+    }
+
+    .item-name {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--brown);
+      line-height: 1.2;
+    }
+
+    .item-desc {
+      font-size: 0.82rem;
+      color: var(--mid);
+      line-height: 1.5;
+      opacity: 0.85;
+    }
+
+    .item-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.55rem;
+    }
+
+    .item-price {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--brown);
+    }
+
+    .item-price span {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: var(--warm);
+      margin-left: 3px;
+    }
+
+    .item-tag {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 50px;
+      background: var(--parchment);
+      color: var(--warm);
+    }
+
+    /* ==============================
+       FEATURED CARD (wide)
+       ============================== */
+    .items-grid.has-featured {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .item-card.featured {
+      grid-column: 1 / -1;
+      flex-direction: row;
+    }
+
+    .item-card.featured .item-card-img {
+      width: 200px;
+    }
+
+    .item-card.featured .item-name { font-size: 1.4rem; }
+    .item-card.featured .item-desc { font-size: 0.87rem; }
+
+    /* ==============================
+       NOTE ROW
+       ============================== */
+    .menu-note {
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--mid);
+      opacity: 0.7;
+      font-style: italic;
+      margin-top: 1rem;
+      padding: 1rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    /* ==============================
+       FOOTER BAND
+       ============================== */
+    .menu-footer-band {
+      background: var(--brown);
+      color: var(--cream);
+      text-align: center;
+      padding: 3rem 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .menu-footer-band h2 {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--gold-lt);
+      margin-bottom: 0.5rem;
+    }
+
+    .menu-footer-band p {
+      font-size: 0.9rem;
+      color: rgba(247,240,230,0.6);
+      margin-bottom: 1.5rem;
+    }
+
+    .back-btn {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--brown);
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 13px 30px;
+      border-radius: 50px;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .back-btn:hover {
+      background: var(--gold-lt);
+      transform: translateY(-2px);
+    }
+
+    /* ==============================
+       RESPONSIVE
+       ============================== */
+    @media (max-width: 680px) {
+      .items-grid.has-featured { grid-template-columns: 1fr; }
+      .item-card.featured { flex-direction: column; }
+      .item-card.featured .item-card-img { width: 100%; height: 160px; }
+      .nav-links { display: none; }
+      .menu-header h1 { font-size: 2.8rem; }
+    }
+
+    @media (max-width: 480px) {
+      .item-card-img { width: 72px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+     <ul>
+         <li><a href="./homepage.html">Home</a></li>
+         <li><a href="./menu.html">Menu</a></li>
+         <li><a href="./gallery.html">Gallery></a></li>
+         <li><a href="./aboutus.html">About Us</a></li>
+         <li><a href="./feedback.html">feedback</a></li>
+     </ul>
+  </nav>
+
+
+
+
+  <!-- NAV -->
+  <nav role="navigation" aria-label="Main navigation">
+    <div class="nav-logo">
+      <svg width="34" height="34" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M8 16 L10 34 Q10 36 13 36 L29 36 Q32 36 32 34 L34 16 Z" fill="#C8973A"/>
+        <path d="M32 20 Q40 20 40 26 Q40 32 32 32" stroke="#C8973A" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M16 11 Q17 8 16 5" stroke="#E8C07A" stroke-width="2" stroke-linecap="round"/>
+        <path d="M21 10 Q22 7 21 4" stroke="#E8C07A" stroke-width="2" stroke-linecap="round"/>
+        <path d="M26 11 Q27 8 26 5" stroke="#E8C07A" stroke-width="2" stroke-linecap="round"/>
+        <ellipse cx="21" cy="17" rx="10" ry="3" fill="#FAF6F0" opacity="0.8"/>
+      </svg>
+      Sit, Sip &amp; Bite
+    </div>
+    <ul class="nav-links" role="list">
+      <li><a href="homepage.html">Homepage</a></li>
+      <li><a href="menu.html" class="active">Menu</a></li>
+      <li><a href="aboutus.html#about">AboutUs</a></li>
+      <li><a href="gallery.html#gallery">Gallery</a></li>
+      <li><a href="feedback.html#feedback">Feedback</a></li>
+    </ul>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="menu-header" aria-labelledby="menu-title">
+    <div class="menu-header-inner">
+      <div class="menu-header-eyebrow">Our Menu</div>
+      <h1 id="menu-title">Crafted with <em>Care</em></h1>
+      <div class="orn">
+        <div class="orn-line"></div>
+        <div class="orn-diamond"></div>
+        <div class="orn-line"></div>
+      </div>
+      <p>Everything freshly made · Prices in Botswana Pula (BWP) · VAT included</p>
+    </div>
+  </header>
+
+  <!-- MENU BODY -->
+  <main class="menu-body" id="main-content">
+
+    <!-- ===== COFFEE ===== -->
+    <section class="menu-section" aria-labelledby="coffee-heading">
+      <div class="section-head">
+        <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=144&q=80"
+             alt="Coffee beans" class="section-head-img" width="72" height="72" loading="lazy" />
+        <div class="section-head-text">
+          <p class="section-label">Chapter One</p>
+          <h2 class="section-title" id="coffee-heading">Coffee</h2>
+        </div>
+      </div>
+      <hr class="section-rule" />
+
+      <div class="items-grid has-featured">
+
+        <!-- FEATURED -->
+        <article class="item-card featured">
+          <div class="item-card-img">
+            <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?w=400&q=80"
+                 alt="Signature latte with latte art" width="200" height="180" loading="lazy" />
+          </div>
+          <div class="item-card-body">
+            <p class="section-label" style="margin-bottom:0.3rem;">Chef's Favourite</p>
+            <h3 class="item-name">Signature Latte</h3>
+            <p class="item-desc">Velvety steamed milk poured over a rich double espresso shot, crowned with delicate free-pour latte art. Available regular or large.</p>
+            <div class="item-footer">
+              <div class="item-price">BWP 32 <span>/ cup</span></div>
+              <span class="item-tag">House Special</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="item-card">
+          <div class="item-card-img">
+            <img src="https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=180&q=80"
+                 alt="Cappuccino" width="88" height="120" loading="lazy" />
+          </div>
+          <div class="item-card-body">
+            <h3 class="item-name">Cappuccino</h3>
+            <p class="item-desc">Equal parts espresso, steamed milk, and thick frothy foam — classic Italian style.</p>
+            <div class="item-footer">
+              <div class="item-price">BWP 30</div>
+              <span class="item-tag">Classic</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="item-card">
+          <div class="item-card-img">
+            <img src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=180&q=80"
+                 alt="Espresso shot" width="88" height="120" loading="lazy" />
+          </div>
+          <div class="item-card-body">
+            <h3 class="item-name">Espresso</h3>
+            <p class="item-desc">A pure, concentrated shot of single-origin Arabica. Bold, bright, and grounding.</p>
+            <div class="item-footer">
+              <div class="item-price">BWP 18</div>
+              <span class="item-tag">Single Shot</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="item-card">
+          <div class="item-card-img">
+            <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=180&q=80"
+                 alt="Double espresso" width="88" height="120" loading="lazy" />
+          </div>
+          <div class="item-card-body">
+            <h3 class="item-name">Double Espresso</h3>
+            <p class="item-desc">Two rich shots pulled back-to-back for a bold, energising morning kick.</p>
+            <div class="item-footer">
+              <div class="item-price">BWP 26</div>
+              <span class="item-tag">Double Shot</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="item-card">
+          <div class="item-card-img">
+            <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=180&q=80"
+                 alt="Iced latte" width="88" height="120" loading="lazy" />
+          </div>
+          <div class="item-card-body">
+            <h3 class="item-name">Iced Latte</h3>
+            <p class="item-desc">Espresso poured over ice with cold milk — smooth, refreshing, and perfect any time.</p>
+            <div class="item-footer">
+              <div class="item-price">BWP 35</div>
+              <span class="item-tag">Cold</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="item-card">
+          <div class="item-card-img">
+            <img src="https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=180&q=80"
+                 alt="Mocha coffee" width="88" height="120" loading="lazy" />
+          </div>
+          <div class="item-card-body">
+            <h3 class="item-name">Mocha</h3>
+            <p class="item-desc">Espresso, rich dark chocolate, and steamed milk, topped with whipped cream.</p>
+            <div class="item-footer">
+              <div class="item-price">BWP 38</div>
+              <span class="item-tag">Indulgent</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+
+    <!-- ===== PASTRIES ===== -->
+    <section class="menu-section" aria-labelledby="pastry-heading">
+      <div class="section-head">
+        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=144&q=80"
+             alt="Fresh croissants" class="section-head-img" width="72" height="72" loading="lazy" />
+        <div class="section-head-text">
+          <p class="section-label">Chapter Two</p>
+          <h2 class="section-title" id="pastry-heading">Pastries &amp; Bakes</h2>
+        </div>
+      </div>
+      <hr class="section-rule" />
+
+      <div class="items-grid has-featured">
+
+        <article class="item-card featured">
+          <div class="item-card-img">
+            <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&q=80"
+                 alt="Golden butter croissants on a wooden board" width="200" height="180" loading="lazy" />
+          </div>
+          <div class="item-card-body">
+            <p class="section-label" style="margin-bottom:0.3rem;">Baked Fresh Daily</p>
+            <h3 class="item-name">Butter Croissant</h3>
+            <p class="item-desc">Classic French-style laminated dough, hand-folded in-house and baked to a golden crisp every morning. Pure, unapologetic butter.</p>
+            <div class="item-footer">
+              <div class="item-price">BWP 22 <span>/ piece</span></div>
+              <span class="item-tag">Baker's Pick</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="item-card">
+          <div class="item-card-img">
+            <img src="https://images.unsplash.com/photo-1604971666091-fe7e9a8d4312?w=180&q=80"
+                 alt="Almond croissant with flaked almonds on top" width="88" height="120" loading="lazy" />
+          </div>
+          <div class="item-card-body">
+            <h3 class="item-name">Almond Croissant</h3>
+            <p class="item-desc">Twice-baked with almond cream filling and a generous topping of toasted flaked almonds.</p>
+            <div class="item-footer">
+              <div class="item-price">BWP 28</div>
+              <span class="item-tag">Nutty</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="item-card">
+          <div class="item-card-img">
+            <img src="https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?w=180&q=80"
+                 alt="Chocolate croissant pain au chocolat" width="88" height="120" loading="lazy" />
+          </div>
+          <div class="item-card-body">
+            <h3 class="item-name">Chocolate Croissant</h3>
+            <p class="item-desc">Crispy laminated pastry wrapped around a dark chocolate bar. Warm from the oven is best.</p>
+            <div class="item-footer">
+              <div class="item-price">BWP 26</div>
+              <span class="item-tag">Sweet</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+
+    <!-- ===== SANDWICHES ===== -->
+    <section class="menu-section" aria-labelledby="sandwich-heading">
+      <div class="section-head">
+        <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=144&q=80"
+             alt="Artisan sandwich" class="section-head-img" width="72" height="72" loading="lazy" />
+        <div class="section-head-text">
+          <p class="section-label">Chapter Three</p>
+          <h2 class="section-title" id="sandwich-heading">Sandwiches</h2>
+        </div>
+      </div>
+      <hr class="section-rule" />
+
+      <div class="items-grid has-featured">
+
+        <article class="item-card featured">
+          <div class="item-card-img">
+            <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=400&q=80"
+                 alt="Club sandwich stacked high with chicken lettuce and tomato" width="200" height="180" loading="lazy" />
+          </div>
+          <div class="item-card-body">
+            <p class="section-label" style="margin-bottom:0.3rem;">Most Ordered</p>
+            <h3 class="item-name">Club Sandwich</h3>
+            <p class="item-desc">Triple-layered toasted white bread loaded with chicken, bacon, crisp lettuce, tomato, and our house mayo dressing. Served with a side salad.</p>
+            <div class="item-footer">
+              <div class="item-price">BWP 55 <span>/ plate</span></div>
+              <span class="item-tag">Crowd Fav</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="item-card">
+          <div class="item-card-img">
+            <img src="https://images.unsplash.com/photo-1540713434306-58505cf1b6fc?w=180&q=80"
+                 alt="Veggie sandwich with avocado and greens on sourdough" width="88" height="120" loading="lazy" />
+          </div>
+          <div class="item-card-body">
+            <h3 class="item-name">Veggie Delight</h3>
+            <p class="item-desc">Grilled veggies, hummus, avocado, and rocket on toasted sourdough.</p>
+            <div class="item-footer">
+              <div class="item-price">BWP 48</div>
+              <span class="item-tag">Vegetarian</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="item-card">
+          <div class="item-card-img">
+            <img src="https://images.unsplash.com/photo-1481070555726-e2fe8357725c?w=180&q=80"
+                 alt="Cheese and ham toasted sandwich" width="88" height="120" loading="lazy" />
+          </div>
+          <div class="item-card-body">
+            <h3 class="item-name">Cheese &amp; Ham</h3>
+            <p class="item-desc">Smoked ham, Swiss cheese, Dijon mustard and pickles on a toasted baguette.</p>
+            <div class="item-footer">
+              <div class="item-price">BWP 50</div>
+              <span class="item-tag">Classic</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="item-card">
+          <div class="item-card-img">
+            <img src="https://images.unsplash.com/photo-1509722747041-616f39b57569?w=180&q=80"
+                 alt="Tuna melt sandwich with melted cheddar" width="88" height="120" loading="lazy" />
+          </div>
+          <div class="item-card-body">
+            <h3 class="item-name">Tuna Melt</h3>
+            <p class="item-desc">Tuna mayo with melted cheddar on toasted brown bread. A classic, comforting bite.</p>
+            <div class="item-footer">
+              <div class="item-price">BWP 52</div>
+              <span class="item-tag">Comfort</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <p class="menu-note">
+        * All prices include VAT &amp; are in Botswana Pula (BWP). Menu subject to change based on seasonal availability.
+        Allergen information available on request.
+      </p>
+    </section>
+
+  </main>
+
+  <!-- FOOTER BAND -->
+  <footer class="menu-footer-band" role="contentinfo">
+    <h2>Come Sit With Us</h2>
+    <p>Plot 1234, Main Mall · Gaborone, Botswana · hello@sitsipbite.co.bw</p>
+    <a href="index.html" class="back-btn">← Back to Home</a>
+  </footer>
+
+  <script>
+    // Scroll-triggered fade-in for menu sections
+    const sections = document.querySelectorAll('.menu-section');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    sections.forEach(s => observer.observe(s));
+  </script>
+
+</body>
+</html>

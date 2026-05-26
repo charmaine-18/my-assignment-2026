@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="About Sit, Sip & Bite — our story, our values, and the team behind your favourite cup in Gaborone, Botswana." />
+  <title>About Us | Sit, Sip &amp; Bite</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>" />
+
+  <style>
+    /* =============================================
+       DESIGN TOKENS
+       ============================================= */
+    :root {
+      --ink:       #16090200;
+      --ink:       #1A0A02;
+      --brown:     #3C1F08;
+      --mid:       #6A3C18;
+      --warm:      #9B5E30;
+      --gold:      #C8913A;
+      --gold-lt:   #E0B468;
+      --gold-pale: #F2DDB0;
+      --cream:     #F5EDE0;
+      --cream-lt:  #FAF6EF;
+      --white:     #FFFFFF;
+      --rule:      rgba(60,31,8,0.13);
+      --serif:     'Libre Baskerville', Georgia, serif;
+      --sans:      'Outfit', sans-serif;
+      --ease:      cubic-bezier(0.22, 1, 0.36, 1);
+      --sh-sm:     0 2px 14px rgba(26,10,2,0.09);
+      --sh-md:     0 8px 36px rgba(26,10,2,0.13);
+      --sh-lg:     0 24px 64px rgba(26,10,2,0.17);
+      --r:         16px;
+    }
+
+    /* =============================================
+       RESET & BASE
+       ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--cream-lt);
+      color: var(--ink);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    img  { display: block; max-width: 100%; }
+    a    { text-decoration: none; color: inherit; }
+    ul   { list-style: none; }
+
+    /* Grain texture */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999;
+    }
+
+    /* =============================================
+       NAV
+       ============================================= */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 500; height: 66px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 3rem;
+      transition: background 0.4s, box-shadow 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(28,10,2,0.96);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 24px rgba(0,0,0,0.28);
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 0.65rem;
+      font-family: var(--serif); font-size: 1.15rem;
+      color: var(--gold-lt); letter-spacing: 0.2px;
+    }
+    .nav-brand-sub {
+      display: block; font-family: var(--sans);
+      font-size: 0.62rem; font-weight: 500;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      color: rgba(224,180,104,0.55); line-height: 1; margin-top: 3px;
+    }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a {
+      font-size: 0.77rem; font-weight: 500;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: rgba(250,246,239,0.68);
+      transition: color 0.2s; position: relative; padding-bottom: 3px;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      height: 1px; width: 0; background: var(--gold);
+      transition: width 0.3s var(--ease);
+    }
+    .nav-links a:hover { color: var(--gold-lt); }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+    .nav-links a.active { color: var(--gold-lt); }
+    .nav-cta {
+      background: var(--gold) !important;
+      color: var(--brown) !important;
+      font-weight: 600 !important;
+      padding: 8px 20px; border-radius: 50px;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: var(--gold-lt) !important; }
+    .nav-toggle {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px; background: none; border: none;
+    }
+    .nav-toggle span {
+      width: 24px; height: 2px; background: var(--cream);
+      border-radius: 2px; transition: 0.3s; display: block;
+    }
+
+    /* =============================================
+       HERO — SPLIT LAYOUT
+       ============================================= */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 66px;
+    }
+
+    .hero-left {
+      background: var(--brown);
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 5rem 4rem 5rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=900&q=70');
+      background-size: cover; background-position: center;
+      opacity: 0.10;
+    }
+
+    /* Large decorative letter */
+    .hero-deco-letter {
+      position: absolute;
+      bottom: -2rem; right: -1rem;
+      font-family: var(--serif);
+      font-size: 22rem;
+      line-height: 1;
+      color: rgba(200,145,58,0.06);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hero-left-inner { position: relative; z-index: 1; }
+
+    .hero-eyebrow {
+      font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 0.7rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 32px; height: 1px; background: var(--gold); opacity: 0.7;
+    }
+
+    .hero-h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.6rem, 5vw, 4.2rem);
+      color: var(--white);
+      line-height: 1.12;
+      letter-spacing: -0.5px;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.9s var(--ease) 0.2s both;
+    }
+    .hero-h1 em { font-style: italic; color: var(--gold-lt); }
+
+    .hero-desc {
+      font-size: 1rem; font-weight: 300;
+      color: rgba(250,246,239,0.7);
+      max-width: 400px; margin-bottom: 2.5rem;
+      line-height: 1.75;
+      animation: fadeUp 0.9s var(--ease) 0.4s both;
+    }
+
+    .hero-stats-row {
+      display: flex; gap: 2rem; flex-wrap: wrap;
+      animation: fadeUp 0.9s var(--ease) 0.6s both;
+    }
+
+    .hero-stat-pill {
+      display: flex; flex-direction: column;
+      border-left: 2px solid rgba(200,145,58,0.4);
+      padding-left: 1rem;
+    }
+    .hero-stat-pill strong {
+      font-family: var(--serif);
+      font-size: 1.7rem; color: var(--gold-lt); line-height: 1;
+    }
+    .hero-stat-pill span {
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: rgba(250,246,239,0.45); margin-top: 3px;
+    }
+
+    .hero-right {
+      position: relative; overflow: hidden;
+    }
+    .hero-right img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      animation: heroZoom 14s ease-out forwards;
+    }
+    @keyframes heroZoom { from { transform: scale(1.08); } to { transform: scale(1); } }
+
+    .hero-right-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(60,31,8,0.25), transparent);
+    }
+
+    /* Floating tag on image */
+    .hero-float-tag {
+      position: absolute; bottom: 2.5rem; left: 2rem;
+      background: rgba(26,10,2,0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(200,145,58,0.3);
+      border-radius: 12px;
+      padding: 1rem 1.4rem;
+      color: var(--cream);
+      animation: fadeUp 0.9s var(--ease) 0.8s both;
+    }
+    .hero-float-tag strong {
+      display: block; font-family: var(--serif);
+      font-size: 1.1rem; color: var(--gold-lt); margin-bottom: 2px;
+    }
+    .hero-float-tag span { font-size: 0.8rem; color: rgba(250,246,239,0.6); }
+
+    /* =============================================
+       GOLDEN DIVIDER BAND
+       ============================================= */
+    .gold-band {
+      background: var(--gold);
+      padding: 1.1rem 2rem;
+      display: flex; align-items: center; justify-content: center;
+      gap: 3rem; flex-wrap: wrap;
+    }
+    .gold-band-item {
+      font-family: var(--serif);
+      font-size: 1rem; color: var(--brown);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .gold-band-dot {
+      width: 4px; height: 4px;
+      background: rgba(60,31,8,0.35); border-radius: 50%;
+    }
+
+    /* =============================================
+       SECTION COMMONS
+       ============================================= */
+    section { padding: 5.5rem 2rem; }
+    .container { max-width: 1060px; margin: 0 auto; }
+
+    .eyebrow {
+      font-size: 0.67rem; font-weight: 600;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); display: block; margin-bottom: 0.7rem;
+    }
+    .section-h {
+      font-family: var(--serif);
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      color: var(--brown); line-height: 1.15; margin-bottom: 1rem;
+    }
+    .section-h em { font-style: italic; color: var(--warm); }
+
+    .orn {
+      display: flex; align-items: center; gap: 0.8rem; margin: 1rem 0 2rem;
+    }
+    .orn-line { width: 48px; height: 1px; background: var(--gold); opacity: 0.5; }
+    .orn-diamond {
+      width: 7px; height: 7px;
+      background: var(--gold); transform: rotate(45deg);
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(26px);
+      transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* =============================================
+       STORY SECTION — EDITORIAL LAYOUT
+       ============================================= */
+    .story-section { background: var(--cream-lt); }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: start;
+    }
+
+    .story-text p {
+      color: var(--mid); font-weight: 300; font-size: 0.97rem;
+      margin-bottom: 1.2rem; line-height: 1.8;
+    }
+
+    .pull-quote {
+      border-left: 3px solid var(--gold);
+      padding: 1rem 1.5rem;
+      margin: 2rem 0;
+      background: var(--cream);
+      border-radius: 0 var(--r) var(--r) 0;
+    }
+    .pull-quote p {
+      font-family: var(--serif);
+      font-size: 1.2rem !important;
+      font-style: italic;
+      color: var(--brown) !important;
+      margin: 0 !important;
+      line-height: 1.5 !important;
+    }
+
+    .story-images { position: relative; }
+
+    .story-img-stack {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 240px 200px;
+      gap: 1rem;
+    }
+
+    .story-img-stack-item {
+      border-radius: var(--r);
+      overflow: hidden;
+      box-shadow: var(--sh-md);
+    }
+    .story-img-stack-item img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.5s var(--ease);
+    }
+    .story-img-stack-item:hover img { transform: scale(1.05); }
+    .story-img-stack-item:first-child { grid-column: span 2; }
+
+    /* =============================================
+       TIMELINE
+       ============================================= */
+    .timeline-section { background: var(--brown); }
+    .timeline-section .eyebrow { color: var(--gold); }
+    .timeline-section .section-h { color: var(--white); }
+
+    .timeline {
+      position: relative;
+      margin-top: 3rem;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--gold), rgba(200,145,58,0.1));
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 0 0 3rem 2.5rem;
+    }
+    .timeline-item:last-child { padding-bottom: 0; }
+
+    .timeline-dot {
+      position: absolute; left: -7px; top: 6px;
+      width: 16px; height: 16px;
+      background: var(--gold); border-radius: 50%;
+      border: 3px solid var(--brown);
+      box-shadow: 0 0 0 3px rgba(200,145,58,0.3);
+    }
+
+    .timeline-year {
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.4rem;
+    }
+
+    .timeline-title {
+      font-family: var(--serif);
+      font-size: 1.25rem; color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    .timeline-desc {
+      font-size: 0.9rem; font-weight: 300;
+      color: rgba(250,246,239,0.6); line-height: 1.7;
+      max-width: 480px;
+    }
+
+    /* =============================================
+       VALUES — HEXAGONAL GRID FEEL
+       ============================================= */
+    .values-section { background: var(--cream); }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.4rem; margin-top: 1rem;
+    }
+
+    .value-card {
+      background: var(--white);
+      border-radius: var(--r);
+      padding: 2.2rem 1.8rem;
+      border: 1px solid var(--rule);
+      box-shadow: var(--sh-sm);
+      transition: transform 0.3s var(--ease), box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .value-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--gold), var(--gold-lt));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s var(--ease);
+    }
+
+    .value-card:hover { transform: translateY(-5px); box-shadow: var(--sh-md); }
+    .value-card:hover::before { transform: scaleX(1); }
+
+    .value-icon {
+      width: 52px; height: 52px;
+      background: var(--cream);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin-bottom: 1.2rem;
+      border: 1px solid var(--rule);
+    }
+
+    .value-card h3 {
+      font-family: var(--serif);
+      font-size: 1.1rem; color: var(--brown); margin-bottom: 0.5rem;
+    }
+    .value-card p { font-size: 0.87rem; color: var(--mid); font-weight: 300; line-height: 1.65; }
+
+    /* =============================================
+       TEAM SECTION
+       ============================================= */
+    .team-section { background: var(--cream-lt); }
+
+    .team-intro {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center; margin-bottom: 4rem;
+    }
+
+    .team-intro-img {
+      border-radius: var(--r);
+      overflow: hidden;
+      height: 340px;
+      box-shadow: var(--sh-lg);
+    }
+    .team-intro-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    .team-intro-text .section-h { margin-top: 0.4rem; }
+    .team-intro-text p {
+      color: var(--mid); font-weight: 300; font-size: 0.96rem;
+      line-height: 1.8; margin-bottom: 1rem;
+    }
+
+    .team-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .team-card {
+      background: var(--white);
+      border-radius: var(--r);
+      overflow: hidden;
+      box-shadow: var(--sh-sm);
+      border: 1px solid var(--rule);
+      transition: transform 0.3s var(--ease), box-shadow 0.3s;
+    }
+    .team-card:hover { transform: translateY(-6px); box-shadow: var(--sh-md); }
+
+    .team-card-photo {
+      height: 220px; overflow: hidden;
+      background: linear-gradient(135deg, var(--cream) 0%, var(--gold-pale) 100%);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+
+    .team-card-photo img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.5s var(--ease);
+    }
+    .team-card:hover .team-card-photo img { transform: scale(1.06); }
+
+    /* Monogram fallback */
+    .team-monogram {
+      font-family: var(--serif);
+      font-size: 5rem;
+      color: rgba(60,31,8,0.15);
+      line-height: 1;
+      position: absolute;
+      user-select: none;
+    }
+
+    .team-card-body { padding: 1.4rem 1.5rem 1.6rem; }
+
+    .team-role {
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.3rem; display: block;
+    }
+
+    .team-name {
+      font-family: var(--serif);
+      font-size: 1.3rem; color: var(--brown); margin-bottom: 0.6rem;
+    }
+
+    .team-bio {
+      font-size: 0.85rem; color: var(--mid);
+      font-weight: 300; line-height: 1.65;
+    }
+
+    .team-card-foot {
+      padding: 0 1.5rem 1.3rem;
+      display: flex; gap: 0.5rem;
+    }
+
+    .team-tag {
+      font-size: 0.68rem; font-weight: 500;
+      background: var(--cream); border: 1px solid var(--rule);
+      color: var(--warm); padding: 4px 10px; border-radius: 50px;
+    }
+
+    /* =============================================
+       COFFEE PROCESS — HORIZONTAL STEPS
+       ============================================= */
+    .process-section { background: var(--brown); overflow: hidden; }
+    .process-section .eyebrow { color: var(--gold); }
+    .process-section .section-h { color: var(--white); }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0; margin-top: 3rem;
+      border: 1px solid rgba(200,145,58,0.2);
+      border-radius: var(--r); overflow: hidden;
+    }
+
+    .process-step {
+      padding: 2.2rem 1.8rem;
+      border-right: 1px solid rgba(200,145,58,0.15);
+      position: relative;
+      transition: background 0.3s;
+    }
+    .process-step:last-child { border-right: none; }
+    .process-step:hover { background: rgba(200,145,58,0.06); }
+
+    .process-step-num {
+      font-family: var(--serif);
+      font-size: 3.5rem; line-height: 1;
+      color: rgba(200,145,58,0.18);
+      position: absolute; top: 1rem; right: 1.2rem;
+    }
+
+    .process-step-icon { font-size: 2rem; margin-bottom: 1rem; }
+
+    .process-step h3 {
+      font-family: var(--serif);
+      font-size: 1.1rem; color: var(--gold-lt); margin-bottom: 0.5rem;
+    }
+    .process-step p {
+      font-size: 0.85rem; color: rgba(250,246,239,0.55);
+      font-weight: 300; line-height: 1.65;
+    }
+
+    /* =============================================
+       PROMISE / CTA
+       ============================================= */
+    .promise-section {
+      position: relative;
+      text-align: center;
+      padding: 6rem 2rem;
+      overflow: hidden;
+    }
+
+    .promise-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1400&q=80');
+      background-size: cover; background-position: center 30%;
+      filter: brightness(0.2);
+    }
+
+    .promise-inner {
+      position: relative; z-index: 1;
+      max-width: 680px; margin: 0 auto;
+    }
+
+    .promise-inner .eyebrow { color: var(--gold); }
+
+    .promise-inner h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      color: var(--white); line-height: 1.15;
+      margin: 0.5rem 0 1.2rem;
+    }
+    .promise-inner h2 em { font-style: italic; color: var(--gold-lt); }
+
+    .promise-inner p {
+      font-size: 1rem; font-weight: 300;
+      color: rgba(250,246,239,0.65);
+      max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.8;
+    }
+
+    .btn-gold {
+      background: var(--gold); color: var(--brown);
+      font-weight: 600; font-size: 0.8rem;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 14px 32px; border-radius: 50px;
+      border: 2px solid var(--gold);
+      transition: all 0.25s var(--ease); display: inline-block;
+    }
+    .btn-gold:hover {
+      background: var(--gold-lt); border-color: var(--gold-lt);
+      transform: translateY(-3px); box-shadow: 0 10px 28px rgba(200,145,58,0.4);
+    }
+
+    .btn-ghost {
+      background: transparent; color: var(--cream);
+      font-weight: 500; font-size: 0.8rem;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 14px 32px; border-radius: 50px;
+      border: 2px solid rgba(250,246,239,0.35);
+      transition: all 0.25s var(--ease); display: inline-block;
+    }
+    .btn-ghost:hover {
+      border-color: var(--cream);
+      background: rgba(250,246,239,0.08);
+      transform: translateY(-3px);
+    }
+
+    /* =============================================
+       FOOTER
+       ============================================= */
+    footer {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 3.5rem 2rem 2rem;
+    }
+
+    .footer-grid {
+      max-width: 1060px; margin: 0 auto;
+      display: grid; grid-template-columns: 1.8fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(250,246,239,0.07);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-brand-text {
+      font-size: 0.87rem;
+      color: rgba(250,246,239,0.45);
+      margin-top: 0.9rem; max-width: 280px; line-height: 1.7;
+    }
+
+    .footer-col h4 {
+      font-family: var(--serif); font-size: 1rem;
+      color: var(--gold-lt); margin-bottom: 1.1rem;
+    }
+    .footer-col ul li { margin-bottom: 0.55rem; }
+    .footer-col ul li a {
+      font-size: 0.87rem; color: rgba(250,246,239,0.48);
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: var(--gold-lt); }
+
+    .footer-bottom {
+      max-width: 1060px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.79rem; color: rgba(250,246,239,0.28);
+      flex-wrap: wrap; gap: 0.5rem;
+    }
+
+    /* =============================================
+       ANIMATIONS
+       ============================================= */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* =============================================
+       RESPONSIVE
+       ============================================= */
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 4rem 2rem; }
+      .hero-right { height: 360px; }
+      .story-grid { grid-template-columns: 1fr; }
+      .team-intro { grid-template-columns: 1fr; }
+      .team-intro-img { height: 260px; }
+      .team-cards { grid-template-columns: 1fr 1fr; }
+      .values-grid { grid-template-columns: 1fr 1fr; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .process-step:nth-child(2) { border-right: none; }
+      .process-step:nth-child(3) { border-top: 1px solid rgba(200,145,58,0.15); }
+      .process-step:nth-child(4) { border-right: none; border-top: 1px solid rgba(200,145,58,0.15); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 0 1.4rem; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 66px; left: 0; right: 0; background: rgba(28,10,2,0.97); padding: 1.5rem 2rem; gap: 1.2rem; }
+      .nav-links.open { display: flex; }
+      .nav-toggle { display: flex; }
+      .hero-left { padding: 3rem 1.5rem; }
+      .hero-stats-row { gap: 1.2rem; }
+      .team-cards { grid-template-columns: 1fr; }
+      .values-grid { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr; }
+      .process-step { border-right: none; border-bottom: 1px solid rgba(200,145,58,0.15); }
+      .footer-grid { grid-template-columns: 1fr; }
+      section { padding: 3.5rem 1.2rem; }
+      .gold-band { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  
+
+  <!-- ===== NAV ===== -->
+  <nav id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-brand">
+      <svg width="36" height="36" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M8 16 L10 34 Q10 36 13 36 L29 36 Q32 36 32 34 L34 16 Z" fill="#C8973A"/>
+        <path d="M32 20 Q40 20 40 26 Q40 32 32 32" stroke="#C8973A" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M16 11 Q17 8 16 5" stroke="#E8C07A" stroke-width="2" stroke-linecap="round"/>
+        <path d="M21 10 Q22 7 21 4" stroke="#E8C07A" stroke-width="2" stroke-linecap="round"/>
+        <path d="M26 11 Q27 8 26 5" stroke="#E8C07A" stroke-width="2" stroke-linecap="round"/>
+        <ellipse cx="21" cy="17" rx="10" ry="3" fill="#FAF6F0" opacity="0.8"/>
+        <circle cx="21" cy="17" r="2" fill="#8B5E3C" opacity="0.4"/>
+      </svg>
+      <div>
+        Sit, Sip &amp; Bite
+        <span class="nav-brand-sub">Coffee &amp; Bites · Gaborone</span>
+      </div>
+    </div>
+    <ul class="nav-links" id="navMenu" role="list">
+      <li><a href="home.html">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="aboutus.html" class="active">About</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="feedback.html" class="nav-cta">Feedback</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Open navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero" aria-labelledby="hero-h">
+
+    <div class="hero-left">
+      <div class="hero-deco-letter" aria-hidden="true">A</div>
+      <div class="hero-left-inner">
+        <div class="hero-eyebrow">About Us</div>
+        <h1 class="hero-h1" id="hero-h">
+          More than coffee —<br>it's a <em>way of life</em>
+        </h1>
+        <p class="hero-desc">
+          Sit, Sip &amp; Bite is a Gaborone café built on the belief that extraordinary coffee, honest food, and genuine warmth can make someone's whole day better. We opened our doors in 2024 and haven't looked back.
+        </p>
+        <div class="hero-stats-row">
+          <div class="hero-stat-pill">
+            <strong>2024</strong>
+            <span>Est. Gaborone</span>
+          </div>
+          <div class="hero-stat-pill">
+            <strong>100%</strong>
+            <span>Arabica Sourced</span>
+          </div>
+          <div class="hero-stat-pill">
+            <strong>Daily</strong>
+            <span>Fresh Baked</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <img src="https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=1000&q=85"
+           alt="Barista carefully pouring a latte in Sit Sip and Bite café"
+           width="700" height="800" loading="eager" />
+      <div class="hero-right-overlay" aria-hidden="true"></div>
+      <div class="hero-float-tag">
+        <strong>☕ Crafted with intention</strong>
+        <span>Every cup, every day, no shortcuts</span>
+      </div>
+    </div>
+
+  </header>
+
+  <!-- ===== GOLD BAND ===== -->
+  <div class="gold-band" aria-hidden="true">
+    <div class="gold-band-item">Premium Arabica Beans <span class="gold-band-dot"></span></div>
+    <div class="gold-band-item">Hand-Laminated Pastries <span class="gold-band-dot"></span></div>
+    <div class="gold-band-item">Ethically Sourced <span class="gold-band-dot"></span></div>
+    <div class="gold-band-item">Baked Before Sunrise <span class="gold-band-dot"></span></div>
+    <div class="gold-band-item">Community Rooted <span class="gold-band-dot"></span></div>
+  </div>
+
+  <!-- ===== OUR STORY ===== -->
+  <section class="story-section" aria-labelledby="story-h">
+    <div class="container">
+      <div class="story-grid">
+
+        <div class="story-text reveal">
+          <span class="eyebrow">Our Story</span>
+          <h2 class="section-h" id="story-h">Born from a single <em>perfect cup</em></h2>
+          <div class="orn"><div class="orn-line"></div><div class="orn-diamond"></div></div>
+
+          <p>It started simply: a founder who couldn't find a truly great cup of coffee in Gaborone and decided to do something about it. What began as a personal obsession turned into months of sourcing trips across Africa, barista training, and countless test batches before the first cup was served.</p>
+
+          <p>In 2024, Sit, Sip &amp; Bite opened its doors at Main Mall. We named it exactly what we wanted people to do: sit down, slow down, and savour something made with genuine care. In a world that rushes, we wanted to be a pause.</p>
+
+          <div class="pull-quote">
+            <p>"We didn't open a café. We opened a place where Gaborone could breathe, connect, and taste something real."</p>
+          </div>
+
+          <p>Today, we serve hundreds of cups a day — every one pulled with the same precision as the first. Our pastries are laminated by hand before the city wakes up. Our sandwiches use fresh, locally sourced ingredients assembled to order. Nothing here is done halfway.</p>
+        </div>
+
+        <div class="story-images reveal">
+          <div class="story-img-stack">
+            <div class="story-img-stack-item">
+              <img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=700&q=80"
+                   alt="Warm interior of Sit Sip and Bite café with wooden furniture and warm lighting"
+                   width="600" height="240" loading="lazy" />
+            </div>
+            <div class="story-img-stack-item">
+              <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=400&q=80"
+                   alt="Close-up of premium Arabica coffee beans sourced from Africa"
+                   width="300" height="200" loading="lazy" />
+            </div>
+            <div class="story-img-stack-item">
+              <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&q=80"
+                   alt="Golden freshly baked croissants cooling on a rack"
+                   width="300" height="200" loading="lazy" />
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TIMELINE ===== -->
+  <section class="timeline-section" aria-labelledby="timeline-h">
+    <div class="container">
+      <span class="eyebrow">Our Journey</span>
+      <h2 class="section-h" id="timeline-h">How we <em>got here</em></h2>
+
+      <div class="timeline">
+
+        <div class="timeline-item reveal">
+          <div class="timeline-dot" aria-hidden="true"></div>
+          <div class="timeline-year">Early 2023</div>
+          <h3 class="timeline-title">The Idea Takes Shape</h3>
+          <p class="timeline-desc">Frustrated by the lack of truly excellent coffee in Gaborone, our founder begins researching coffee origins, brewing techniques, and the art of pastry-making — often travelling to learn from masters.</p>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-dot" aria-hidden="true"></div>
+          <div class="timeline-year">Late 2023</div>
+          <h3 class="timeline-title">Sourcing the Perfect Bean</h3>
+          <p class="timeline-desc">Months of tasting and trips across East and Southern Africa culminate in a partnership with ethical small-batch Arabica farmers. The signature blend is born — bright, complex, and distinctly African.</p>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-dot" aria-hidden="true"></div>
+          <div class="timeline-year">March 2024</div>
+          <h3 class="timeline-title">We Open Our Doors</h3>
+          <p class="timeline-desc">Sit, Sip &amp; Bite opens at Main Mall, Gaborone. The first latte is served at 7:02 AM on opening day. The queue forms before we unlock the door, and it hasn't stopped since.</p>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-dot" aria-hidden="true"></div>
+          <div class="timeline-year">2024 – Present</div>
+          <h3 class="timeline-title">Growing the Community</h3>
+          <p class="timeline-desc">We expand our menu, host weekly community events, partner with local artists for rotating displays, and build a loyal base of regulars who call our corner their own. This is only the beginning.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VALUES ===== -->
+  <section class="values-section" aria-labelledby="values-h">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:0.5rem;">
+        <span class="eyebrow">What Drives Us</span>
+        <h2 class="section-h" id="values-h">Our <em>Core Values</em></h2>
+        <div class="orn" style="justify-content:center;"><div class="orn-line"></div><div class="orn-diamond"></div><div class="orn-line"></div></div>
+      </div>
+
+      <div class="values-grid">
+
+        <div class="value-card reveal">
+          <div class="value-icon" role="img" aria-label="Quality icon">⭐</div>
+          <h3>Uncompromising Quality</h3>
+          <p>We never cut corners. From the grade of our beans to the temperature of our steam wand, every detail is deliberate and every standard is non-negotiable.</p>
+        </div>
+
+        <div class="value-card reveal">
+          <div class="value-icon" role="img" aria-label="Community icon">🤝</div>
+          <h3>Community Roots</h3>
+          <p>We are a Gaborone business through and through. We hire locally, source locally where we can, and put back into the community that gives us life every single day.</p>
+        </div>
+
+        <div class="value-card reveal">
+          <div class="value-icon" role="img" aria-label="Sustainability icon">🌱</div>
+          <h3>Sustainability Matters</h3>
+          <p>From compostable packaging to ethical sourcing partnerships, we believe a great café can also be a responsible one. Small choices, repeated daily, make a real difference.</p>
+        </div>
+
+        <div class="value-card reveal">
+          <div class="value-icon" role="img" aria-label="Warmth icon">🔥</div>
+          <h3>Genuine Warmth</h3>
+          <p>We hire for kindness first. Every person at Sit, Sip &amp; Bite is trained to make you feel genuinely welcome — not just served, but seen.</p>
+        </div>
+
+        <div class="value-card reveal">
+          <div class="value-icon" role="img" aria-label="Craft icon">✂️</div>
+          <h3>Craft Over Convenience</h3>
+          <p>We do things the slower, harder way because it tastes better. Hand-laminated pastry. Fresh-ground beans per order. No premixes, no shortcuts, no excuses.</p>
+        </div>
+
+        <div class="value-card reveal">
+          <div class="value-icon" role="img" aria-label="Consistency icon">🎯</div>
+          <h3>Consistent Excellence</h3>
+          <p>Your hundredth visit should feel as good as your first. We train obsessively so that the experience you fell in love with is the experience you always get.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TEAM ===== -->
+  <section class="team-section" aria-labelledby="team-h">
+    <div class="container">
+
+      <div class="team-intro">
+        <div class="team-intro-img reveal">
+          <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=700&q=80"
+               alt="The Sit Sip and Bite team at work inside the café"
+               width="500" height="340" loading="lazy" />
+        </div>
+        <div class="team-intro-text reveal">
+          <span class="eyebrow">The People Behind the Cup</span>
+          <h2 class="section-h" id="team-h">Meet our <em>team</em></h2>
+          <p>Every great café is built on great people. Ours are passionate, trained to a high standard, and genuinely love what they do. When you walk through our door, these are the people who make your day a little better.</p>
+          <p>We invest in our team's growth — through training, fair wages, and a culture where craft and care are valued above all else.</p>
+        </div>
+      </div>
+
+      <div class="team-cards">
+
+        <!-- Bame Molefe -->
+        <article class="team-card reveal">
+          <div class="team-card-photo">
+            <div class="team-monogram" aria-hidden="true">B</div>
+          </div>
+          <div class="team-card-body">
+            <span class="team-role">Head Barista &amp; Founder</span>
+            <h3 class="team-name">Bame Molefe</h3>
+            <p class="team-bio">Bame founded Sit, Sip &amp; Bite after years of searching for the perfect cup in Botswana. Trained in espresso technique across East Africa, she brings a precision and passion to every cup that sets the standard for the whole team.</p>
+          </div>
+          <div class="team-card-foot">
+            <span class="team-tag">Espresso</span>
+            <span class="team-tag">Latte Art</span>
+            <span class="team-tag">Sourcing</span>
+          </div>
+        </article>
+
+        <!-- Katlo Ikaneng -->
+        <article class="team-card reveal">
+          <div class="team-card-photo">
+            <div class="team-monogram" aria-hidden="true">K</div>
+          </div>
+          <div class="team-card-body">
+            <span class="team-role">Pastry Chef</span>
+            <h3 class="team-name">Katlo Ikaneng</h3>
+            <p class="team-bio">Katlo is the reason our croissants are legendary. She begins laminating dough before 5 AM every morning, folding in layer after layer of butter with the same care she's had since her culinary training in Johannesburg.</p>
+          </div>
+          <div class="team-card-foot">
+            <span class="team-tag">Laminated Dough</span>
+            <span class="team-tag">Pastry</span>
+            <span class="team-tag">Baking</span>
+          </div>
+        </article>
+
+        <!-- Kago Mbwe -->
+        <article class="team-card reveal">
+          <div class="team-card-photo">
+            <div class="team-monogram" aria-hidden="true">K</div>
+          </div>
+          <div class="team-card-body">
+            <span class="team-role">Operations Manager</span>
+            <h3 class="team-name">Kago Mbwe</h3>
+            <p class="team-bio">Kago is the engine that keeps everything running smoothly. From supplier relationships to staff scheduling and the customer experience, he ensures the café hums with quiet efficiency so the team can focus on what they love.</p>
+          </div>
+          <div class="team-card-foot">
+            <span class="team-tag">Operations</span>
+            <span class="team-tag">Team Culture</span>
+            <span class="team-tag">Logistics</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROCESS ===== -->
+  <section class="process-section" aria-labelledby="process-h">
+    <div class="container">
+      <span class="eyebrow">How We Work</span>
+      <h2 class="section-h" id="process-h">From bean to <em>cup</em></h2>
+
+      <div class="process-steps" role="list">
+
+        <div class="process-step reveal" role="listitem">
+          <div class="process-step-num" aria-hidden="true">01</div>
+          <div class="process-step-icon" role="img" aria-label="Sourcing">🌍</div>
+          <h3>Ethical Sourcing</h3>
+          <p>We work directly with small-batch Arabica farmers across Africa, paying fair prices and building long-term relationships that support sustainable farming.</p>
+        </div>
+
+        <div class="process-step reveal" role="listitem">
+          <div class="process-step-num" aria-hidden="true">02</div>
+          <div class="process-step-icon" role="img" aria-label="Roasting">🔥</div>
+          <h3>Local Roasting</h3>
+          <p>Beans are roasted locally in small batches to ensure peak freshness. Our signature blend is roasted to a medium profile — bright, complex, and never bitter.</p>
+        </div>
+
+        <div class="process-step reveal" role="listitem">
+          <div class="process-step-num" aria-hidden="true">03</div>
+          <div class="process-step-icon" role="img" aria-label="Brewing">⚙️</div>
+          <h3>Precision Brewing</h3>
+          <p>Every shot is dialled in fresh each morning. Grind size, dose, extraction time — all calibrated to the day's humidity and bean batch. No guessing, ever.</p>
+        </div>
+
+        <div class="process-step reveal" role="listitem">
+          <div class="process-step-num" aria-hidden="true">04</div>
+          <div class="process-step-icon" role="img" aria-label="Serving">☕</div>
+          <h3>Served with Care</h3>
+          <p>Your cup leaves our hands warm, perfectly made, and served with a smile. From our first order to our last, the standard never drops.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROMISE / CTA ===== -->
+  <section class="promise-section" aria-labelledby="promise-h">
+    <div class="promise-bg" aria-hidden="true"></div>
+    <div class="promise-inner reveal">
+      <span class="eyebrow">Our Promise to You</span>
+      <h2 id="promise-h">Every visit should feel like <em>coming home</em></h2>
+      <p>We don't take your time or your trust for granted. Whether it's your first visit or your five hundredth, we promise you the same quality, the same warmth, and the same commitment to making your day a little better.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="menu.html" class="btn-gold">Explore Our Menu</a>
+        <a href="index.html" class="btn-ghost">Leave Feedback</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer role="contentinfo">
+    <div class="footer-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:0.65rem;font-family:var(--serif);font-size:1.1rem;color:var(--gold-lt);">
+          <svg width="34" height="34" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M8 16 L10 34 Q10 36 13 36 L29 36 Q32 36 32 34 L34 16 Z" fill="#C8973A"/>
+            <path d="M32 20 Q40 20 40 26 Q40 32 32 32" stroke="#C8973A" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M16 11 Q17 8 16 5" stroke="#E8C07A" stroke-width="2" stroke-linecap="round"/>
+            <path d="M21 10 Q22 7 21 4" stroke="#E8C07A" stroke-width="2" stroke-linecap="round"/>
+            <path d="M26 11 Q27 8 26 5" stroke="#E8C07A" stroke-width="2" stroke-linecap="round"/>
+            <ellipse cx="21" cy="17" rx="10" ry="3" fill="#FAF6F0" opacity="0.8"/>
+          </svg>
+          Sit, Sip &amp; Bite
+        </div>
+        <p class="footer-brand-text">A cosy coffee haven in the heart of Gaborone. Serving great coffee, fresh pastries, and artisan bites since 2024.</p>
+      </div>
+      <nav class="footer-col" aria-label="Footer navigation">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="index.html">Gallery</a></li>
+          <li><a href="index.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="footer-col">
+        <h4>Get In Touch</h4>
+        <ul>
+          <li><a href="#">Plot 1234, Main Mall</a></li>
+          <li><a href="#">Gaborone, Botswana</a></li>
+          <li><a href="tel:+2671234567">+267 123 4567</a></li>
+          <li><a href="mailto:hello@sitsipbite.co.bw">hello@sitsipbite.co.bw</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Sit, Sip &amp; Bite. All rights reserved.</p>
+      <p>Made with ☕ in Gaborone, Botswana</p>
+    </div>
+  </footer>
+
+  <script>
+    // Sticky nav
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    // Mobile nav toggle
+    const toggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    toggle.addEventListener('click', () => {
+      const open = navMenu.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 100);
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => obs.observe(el));
+  </script>
+
+</body>
+</html>

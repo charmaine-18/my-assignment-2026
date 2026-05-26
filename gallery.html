@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Gallery – Sit, Sip & Bite. A visual journey through our café, coffee, food, and atmosphere in Gaborone, Botswana." />
+  <title>Gallery | Sit, Sip &amp; Bite</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>" />
+
+  <style>
+    :root {
+      --ink:       #180C04;
+      --brown:     #3A1E08;
+      --mid:       #6B3B18;
+      --warm:      #9A5E2E;
+      --gold:      #C8913A;
+      --gold-lt:   #E0B468;
+      --gold-pale: #F0D9A8;
+      --cream:     #F5EDE0;
+      --cream-lt:  #FAF6EF;
+      --white:     #FFFFFF;
+      --rule:      rgba(58,30,8,0.12);
+      --serif:     'Cormorant', Georgia, serif;
+      --sans:      'Syne', sans-serif;
+      --ease:      cubic-bezier(0.22, 1, 0.36, 1);
+      --sh-sm:     0 2px 14px rgba(24,12,4,0.09);
+      --sh-md:     0 8px 36px rgba(24,12,4,0.14);
+      --sh-lg:     0 24px 60px rgba(24,12,4,0.20);
+      --r:         12px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--ink); color: var(--cream); line-height: 1.65; overflow-x: hidden; }
+    img  { display: block; max-width: 100%; }
+    a    { text-decoration: none; color: inherit; }
+    ul   { list-style: none; }
+
+    body::after {
+      content: ''; position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999;
+    }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; height: 66px; display: flex; align-items: center; justify-content: space-between; padding: 0 3rem; background: rgba(24,12,4,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(200,145,58,0.12); }
+    .nav-brand { display: flex; align-items: center; gap: 0.65rem; font-family: var(--serif); font-size: 1.2rem; color: var(--gold-lt); letter-spacing: 0.2px; }
+    .nav-brand-sub { display: block; font-family: var(--sans); font-size: 0.6rem; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(224,180,104,0.5); line-height: 1; margin-top: 3px; }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { font-size: 0.75rem; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(245,237,224,0.6); transition: color 0.2s; position: relative; padding-bottom: 3px; }
+    .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; height: 1px; width: 0; background: var(--gold); transition: width 0.3s var(--ease); }
+    .nav-links a:hover { color: var(--gold-lt); }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+    .nav-links a.active { color: var(--gold-lt); }
+    .nav-cta { background: var(--gold) !important; color: var(--brown) !important; font-weight: 600 !important; padding: 8px 20px; border-radius: 50px; }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: var(--gold-lt) !important; }
+    .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .nav-toggle span { width: 24px; height: 2px; background: var(--cream); border-radius: 2px; transition: 0.3s; display: block; }
+
+    /* HERO */
+    .gallery-hero {
+      min-height: 60vh;
+      position: relative;
+      display: flex; align-items: flex-end;
+      padding: 0 0 4rem;
+      overflow: hidden;
+    }
+    .gallery-hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1600&q=80');
+      background-size: cover; background-position: center 60%;
+      transform: scale(1.06);
+      animation: heroZoom 14s ease-out forwards;
+    }
+    @keyframes heroZoom { to { transform: scale(1); } }
+    .gallery-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(24,12,4,1) 0%, rgba(24,12,4,0.5) 50%, rgba(24,12,4,0.2) 100%);
+    }
+    .gallery-hero-content {
+      position: relative; z-index: 2;
+      padding: 0 3rem;
+      max-width: 1060px; margin: 0 auto; width: 100%;
+    }
+    .hero-eyebrow {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--gold);
+      display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1rem;
+      animation: fadeUp 0.8s var(--ease) 0.2s both;
+    }
+    .hero-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); opacity: 0.7; }
+    .gallery-hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 300; line-height: 1.05;
+      color: var(--white); letter-spacing: -1px;
+      animation: fadeUp 0.8s var(--ease) 0.35s both;
+    }
+    .gallery-hero h1 em { font-style: italic; color: var(--gold-lt); }
+    .gallery-hero-sub {
+      font-size: 0.95rem; font-weight: 400;
+      color: rgba(245,237,224,0.6); margin-top: 0.8rem;
+      max-width: 450px; line-height: 1.7;
+      animation: fadeUp 0.8s var(--ease) 0.5s both;
+    }
+
+    /* FILTER BAR */
+    .filter-bar {
+      position: sticky; top: 66px; z-index: 100;
+      background: rgba(24,12,4,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(200,145,58,0.15);
+      padding: 1rem 3rem;
+    }
+    .filter-inner {
+      max-width: 1060px; margin: 0 auto;
+      display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 2.5px;
+      text-transform: uppercase; color: rgba(245,237,224,0.4);
+      margin-right: 0.5rem;
+    }
+    .filter-btn {
+      background: rgba(245,237,224,0.06);
+      border: 1px solid rgba(200,145,58,0.2);
+      color: rgba(245,237,224,0.6);
+      font-family: var(--sans); font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 1px; text-transform: uppercase;
+      padding: 7px 16px; border-radius: 50px;
+      cursor: pointer; transition: all 0.2s var(--ease);
+    }
+    .filter-btn:hover { border-color: var(--gold); color: var(--gold-lt); }
+    .filter-btn.active { background: var(--gold); border-color: var(--gold); color: var(--brown); font-weight: 600; }
+
+    /* GALLERY GRID */
+    .gallery-section { padding: 3rem 3rem 5rem; }
+    .gallery-container { max-width: 1060px; margin: 0 auto; }
+
+    .masonry {
+      columns: 3;
+      column-gap: 1.2rem;
+    }
+
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 1.2rem;
+      position: relative;
+      border-radius: var(--r);
+      overflow: hidden;
+      cursor: pointer;
+      display: block;
+    }
+
+    .gallery-item img {
+      width: 100%; height: auto;
+      display: block;
+      transition: transform 0.6s var(--ease);
+    }
+
+    .gallery-item-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(24,12,4,0.85) 0%, rgba(24,12,4,0) 55%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 1.4rem 1.2rem;
+    }
+
+    .gallery-item:hover img { transform: scale(1.06); }
+    .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+
+    .gallery-item-cat {
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 0.25rem;
+    }
+    .gallery-item-label {
+      font-family: var(--serif); font-size: 1.15rem;
+      font-style: italic; color: var(--white); line-height: 1.2;
+    }
+
+    .gallery-item-zoom {
+      position: absolute; top: 1rem; right: 1rem;
+      width: 36px; height: 36px;
+      background: rgba(24,12,4,0.7);
+      border: 1px solid rgba(200,145,58,0.4);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.3s;
+      color: var(--gold-lt); font-size: 0.85rem;
+    }
+    .gallery-item:hover .gallery-item-zoom { opacity: 1; }
+
+    /* Hidden items (filtered out) */
+    .gallery-item.hidden { display: none; }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 2000;
+      background: rgba(12,6,2,0.96);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.35s ease;
+      padding: 2rem;
+    }
+    .lightbox.open { opacity: 1; pointer-events: all; }
+
+    .lightbox-inner {
+      position: relative;
+      max-width: 900px; width: 100%;
+      display: flex; flex-direction: column; align-items: center;
+      animation: lbIn 0.4s var(--ease) both;
+    }
+    @keyframes lbIn { from { transform: scale(0.94); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .lightbox-img-wrap {
+      width: 100%; max-height: 75vh;
+      border-radius: var(--r);
+      overflow: hidden; box-shadow: var(--sh-lg);
+    }
+    .lightbox-img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: contain; display: block;
+      max-height: 75vh;
+    }
+
+    .lightbox-caption {
+      margin-top: 1.2rem; text-align: center;
+    }
+    .lightbox-caption-cat {
+      font-size: 0.62rem; font-weight: 600; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem;
+    }
+    .lightbox-caption-title {
+      font-family: var(--serif); font-size: 1.4rem;
+      font-style: italic; color: var(--white);
+    }
+
+    .lightbox-close {
+      position: absolute; top: -1rem; right: -1rem;
+      width: 44px; height: 44px;
+      background: var(--brown); border: 1px solid rgba(200,145,58,0.4);
+      border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold-lt); font-size: 1.2rem;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover { background: var(--mid); }
+
+    .lightbox-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 44px; height: 44px;
+      background: rgba(58,30,8,0.8);
+      border: 1px solid rgba(200,145,58,0.3);
+      border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold-lt); font-size: 1.1rem;
+      transition: background 0.2s;
+    }
+    .lightbox-nav:hover { background: var(--mid); }
+    .lightbox-prev { left: -3rem; }
+    .lightbox-next { right: -3rem; }
+    .lightbox-counter {
+      position: absolute; bottom: -2.5rem; left: 50%; transform: translateX(-50%);
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 2px;
+      color: rgba(245,237,224,0.4);
+    }
+
+    /* INSTAGRAM CTA */
+    .insta-cta {
+      background: var(--brown);
+      padding: 3rem 3rem;
+      text-align: center;
+      border-top: 1px solid rgba(200,145,58,0.15);
+    }
+    .insta-cta h3 {
+      font-family: var(--serif); font-size: 1.8rem;
+      color: var(--white); font-weight: 300; margin-bottom: 0.5rem;
+    }
+    .insta-cta h3 em { font-style: italic; color: var(--gold-lt); }
+    .insta-cta p { font-size: 0.9rem; color: rgba(245,237,224,0.5); margin-bottom: 1.5rem; }
+    .btn-gold { background: var(--gold); color: var(--brown); font-weight: 600; font-size: 0.78rem; letter-spacing: 1.5px; text-transform: uppercase; padding: 13px 28px; border-radius: 50px; border: 2px solid var(--gold); transition: all 0.25s var(--ease); display: inline-block; }
+    .btn-gold:hover { background: var(--gold-lt); border-color: var(--gold-lt); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,145,58,0.4); }
+
+    /* FOOTER */
+    footer { background: rgba(12,6,2,0.98); color: var(--cream); padding: 3rem 2rem 1.5rem; border-top: 1px solid rgba(200,145,58,0.1); }
+    .footer-grid { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: 1.8fr 1fr 1fr; gap: 3rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(245,237,224,0.06); margin-bottom: 1.2rem; }
+    .footer-brand-text { font-size: 0.86rem; color: rgba(245,237,224,0.4); margin-top: 0.8rem; max-width: 260px; line-height: 1.7; }
+    .footer-col h4 { font-family: var(--serif); font-size: 1rem; color: var(--gold-lt); margin-bottom: 1rem; }
+    .footer-col ul li { margin-bottom: 0.5rem; }
+    .footer-col ul li a { font-size: 0.86rem; color: rgba(245,237,224,0.42); transition: color 0.2s; }
+    .footer-col ul li a:hover { color: var(--gold-lt); }
+    .footer-bottom { max-width: 1060px; margin: 0 auto; display: flex; justify-content: space-between; font-size: 0.78rem; color: rgba(245,237,224,0.25); flex-wrap: wrap; gap: 0.5rem; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      .masonry { columns: 2; }
+      .gallery-hero-content, .gallery-section, .filter-bar { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .lightbox-prev { left: -1.5rem; }
+      .lightbox-next { right: -1.5rem; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      nav { padding: 0 1.2rem; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 66px; left: 0; right: 0; background: rgba(18,8,2,0.98); padding: 1.5rem; gap: 1.2rem; }
+      .nav-links.open { display: flex; }
+      .nav-toggle { display: flex; }
+      .masonry { columns: 1; }
+      .gallery-hero h1 { font-size: 2.8rem; }
+      .lightbox-nav { display: none; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+     <ul>
+         <li><a href="./homepage.html">Home</a></li>
+         <li><a href="./menu.html">Menu</a></li>
+         <li><a href="./gallery.html">Gallery></a></li>
+         <li><a href="./aboutus.html">About Us</a></li>
+         <li><a href="./feedback.html">feedback</a></li>
+     </ul>
+  </nav>
+
+
+  <!-- NAV -->
+  <nav role="navigation" aria-label="Main navigation">
+    <div class="nav-brand">
+      <svg width="36" height="36" viewBox="0 0 42 42" fill="none" aria-hidden="true">
+        <path d="M8 16 L10 34 Q10 36 13 36 L29 36 Q32 36 32 34 L34 16 Z" fill="#C8973A"/>
+        <path d="M32 20 Q40 20 40 26 Q40 32 32 32" stroke="#C8973A" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M16 11 Q17 8 16 5" stroke="#E8C07A" stroke-width="2" stroke-linecap="round"/>
+        <path d="M21 10 Q22 7 21 4" stroke="#E8C07A" stroke-width="2" stroke-linecap="round"/>
+        <path d="M26 11 Q27 8 26 5" stroke="#E8C07A" stroke-width="2" stroke-linecap="round"/>
+        <ellipse cx="21" cy="17" rx="10" ry="3" fill="#FAF6F0" opacity="0.8"/>
+        <circle cx="21" cy="17" r="2" fill="#8B5E3C" opacity="0.4"/>
+      </svg>
+      <div>Sit, Sip &amp; Bite<span class="nav-brand-sub">Coffee &amp; Bites · Gaborone</span></div>
+    </div>
+    <ul class="nav-links" id="navMenu" role="list">
+      <li><a href="home.html">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="gallery.html" class="active">Gallery</a></li>
+      <li><a href="feedback.html" class="nav-cta">Feedback</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Open navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <header class="gallery-hero" aria-labelledby="gallery-h">
+    <div class="gallery-hero-bg" aria-hidden="true"></div>
+    <div class="gallery-hero-overlay" aria-hidden="true"></div>
+    <div class="gallery-hero-content">
+      <div class="hero-eyebrow">Our Gallery</div>
+      <h1 id="gallery-h">Moments &amp; <em>Memories</em></h1>
+      <p class="gallery-hero-sub">A visual journey through our coffee, our food, our space, and the people who make it all worthwhile.</p>
+    </div>
+  </header>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar" role="navigation" aria-label="Gallery filter">
+    <div class="filter-inner">
+      <span class="filter-label">Filter</span>
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="coffee">Coffee</button>
+      <button class="filter-btn" data-filter="food">Food</button>
+      <button class="filter-btn" data-filter="interior">Interior</button>
+      <button class="filter-btn" data-filter="team">Behind the Bar</button>
+    </div>
+  </div>
+
+  <!-- GALLERY GRID -->
+  <main class="gallery-section" id="gallery-grid" aria-label="Photo gallery">
+    <div class="gallery-container">
+      <div class="masonry" id="masonryGrid">
+
+        <!-- Coffee items -->
+        <figure class="gallery-item reveal" data-cat="coffee" data-label="Signature Latte" tabindex="0" role="button" aria-label="View: Signature Latte">
+          <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?w=600&q=80" alt="Signature latte with intricate latte art in a white ceramic cup" width="600" loading="lazy" />
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-cat">Coffee</div>
+            <div class="gallery-item-label">Signature Latte</div>
+          </div>
+          <div class="gallery-item-zoom" aria-hidden="true">⤢</div>
+        </figure>
+
+        <figure class="gallery-item reveal" data-cat="coffee" data-label="Espresso Shot" tabindex="0" role="button" aria-label="View: Espresso Shot">
+          <img src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=600&q=80" alt="Rich espresso shot being extracted into a small ceramic cup" width="600" loading="lazy" />
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-cat">Coffee</div>
+            <div class="gallery-item-label">Espresso Shot</div>
+          </div>
+          <div class="gallery-item-zoom" aria-hidden="true">⤢</div>
+        </figure>
+
+        <figure class="gallery-item reveal" data-cat="food" data-label="Golden Croissants" tabindex="0" role="button" aria-label="View: Golden Croissants">
+          <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&q=80" alt="Golden flaky butter croissants fresh from the oven on a rack" width="600" loading="lazy" />
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-cat">Food</div>
+            <div class="gallery-item-label">Golden Croissants</div>
+          </div>
+          <div class="gallery-item-zoom" aria-hidden="true">⤢</div>
+        </figure>
+
+        <figure class="gallery-item reveal" data-cat="interior" data-label="Our Café Corner" tabindex="0" role="button" aria-label="View: Our Café Corner">
+          <img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=600&q=80" alt="Warm cosy corner of Sit Sip and Bite café with wooden furniture and soft lighting" width="600" loading="lazy" />
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-cat">Interior</div>
+            <div class="gallery-item-label">Our Café Corner</div>
+          </div>
+          <div class="gallery-item-zoom" aria-hidden="true">⤢</div>
+        </figure>
+
+        <figure class="gallery-item reveal" data-cat="coffee" data-label="Cappuccino Foam" tabindex="0" role="button" aria-label="View: Cappuccino Foam">
+          <img src="https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=600&q=80" alt="Perfectly made cappuccino with thick foam in a white cup" width="600" loading="lazy" />
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-cat">Coffee</div>
+            <div class="gallery-item-label">Cappuccino Foam</div>
+          </div>
+          <div class="gallery-item-zoom" aria-hidden="true">⤢</div>
+        </figure>
+
+        <figure class="gallery-item reveal" data-cat="food" data-label="Club Sandwich" tabindex="0" role="button" aria-label="View: Club Sandwich">
+          <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600&q=80" alt="Triple-layered club sandwich stacked high on a wooden board" width="600" loading="lazy" />
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-cat">Food</div>
+            <div class="gallery-item-label">Club Sandwich</div>
+          </div>
+          <div class="gallery-item-zoom" aria-hidden="true">⤢</div>
+        </figure>
+
+        <figure class="gallery-item reveal" data-cat="team" data-label="Crafting the Cup" tabindex="0" role="button" aria-label="View: Crafting the Cup">
+          <img src="https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=600&q=80" alt="Barista carefully pouring a latte with precision and focus" width="600" loading="lazy" />
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-cat">Behind the Bar</div>
+            <div class="gallery-item-label">Crafting the Cup</div>
+          </div>
+          <div class="gallery-item-zoom" aria-hidden="true">⤢</div>
+        </figure>
+
+        <figure class="gallery-item reveal" data-cat="coffee" data-label="Coffee Beans" tabindex="0" role="button" aria-label="View: Coffee Beans">
+          <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=600&q=80" alt="Close-up of premium Arabica coffee beans from ethical African farms" width="600" loading="lazy" />
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-cat">Coffee</div>
+            <div class="gallery-item-label">Premium Arabica Beans</div>
+          </div>
+          <div class="gallery-item-zoom" aria-hidden="true">⤢</div>
+        </figure>
+
+        <figure class="gallery-item reveal" data-cat="interior" data-label="Morning Light" tabindex="0" role="button" aria-label="View: Morning Light">
+          <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80" alt="Soft morning light streaming into the café through large windows" width="600" loading="lazy" />
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-cat">Interior</div>
+            <div class="gallery-item-label">Morning Light</div>
+          </div>
+          <div class="gallery-item-zoom" aria-hidden="true">⤢</div>
+        </figure>
+
+        <figure class="gallery-item reveal" data-cat="food" data-label="Almond Croissant" tabindex="0" role="button" aria-label="View: Almond Croissant">
+          <img src="https://images.unsplash.com/photo-1604971666091-fe7e9a8d4312?w=600&q=80" alt="Almond croissant with toasted flaked almonds on top" width="600" loading="lazy" />
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-cat">Food</div>
+            <div class="gallery-item-label">Almond Croissant</div>
+          </div>
+          <div class="gallery-item-zoom" aria-hidden="true">⤢</div>
+        </figure>
+
+        <figure class="gallery-item reveal" data-cat="coffee" data-label="Iced Latte" tabindex="0" role="button" aria-label="View: Iced Latte">
+          <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=80" alt="Refreshing iced latte in a tall glass with cold milk" width="600" loading="lazy" />
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-cat">Coffee</div>
+            <div class="gallery-item-label">Iced Latte</div>
+          </div>
+          <div class="gallery-item-zoom" aria-hidden="true">⤢</div>
+        </figure>
+
+        <figure class="gallery-item reveal" data-cat="interior" data-label="Evening Ambience" tabindex="0" role="button" aria-label="View: Evening Ambience">
+          <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=600&q=80" alt="Warm evening ambience inside the café with golden lighting" width="600" loading="lazy" />
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-cat">Interior</div>
+            <div class="gallery-item-label">Evening Ambience</div>
+          </div>
+          <div class="gallery-item-zoom" aria-hidden="true">⤢</div>
+        </figure>
+
+        <figure class="gallery-item reveal" data-cat="team" data-label="The Morning Prep" tabindex="0" role="button" aria-label="View: The Morning Prep">
+          <img src="https://images.unsplash.com/photo-1545665277-5937489579f2?w=600&q=80" alt="Close up of latte art being poured with expert technique" width="600" loading="lazy" />
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-cat">Behind the Bar</div>
+            <div class="gallery-item-label">Latte Art Pour</div>
+          </div>
+          <div class="gallery-item-zoom" aria-hidden="true">⤢</div>
+        </figure>
+
+        <figure class="gallery-item reveal" data-cat="food" data-label="Veggie Delight" tabindex="0" role="button" aria-label="View: Veggie Delight">
+          <img src="https://images.unsplash.com/photo-1540713434306-58505cf1b6fc?w=600&q=80" alt="Veggie delight sandwich with avocado and greens on toasted sourdough" width="600" loading="lazy" />
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-cat">Food</div>
+            <div class="gallery-item-label">Veggie Delight</div>
+          </div>
+          <div class="gallery-item-zoom" aria-hidden="true">⤢</div>
+        </figure>
+
+        <figure class="gallery-item reveal" data-cat="coffee" data-label="Mocha Indulgence" tabindex="0" role="button" aria-label="View: Mocha Indulgence">
+          <img src="https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=600&q=80" alt="Rich mocha coffee with chocolate and cream in a tall glass" width="600" loading="lazy" />
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-cat">Coffee</div>
+            <div class="gallery-item-label">Mocha Indulgence</div>
+          </div>
+          <div class="gallery-item-zoom" aria-hidden="true">⤢</div>
+        </figure>
+
+      </div>
+
+      <p id="noResults" style="display:none;text-align:center;color:rgba(245,237,224,0.4);font-size:0.9rem;padding:3rem 0;">No photos in this category yet.</p>
+    </div>
+  </main>
+
+  <!-- INSTAGRAM CTA -->
+  <div class="insta-cta">
+    <h3>Tag us on social &amp; <em>be featured</em></h3>
+    <p>Share your Sit, Sip &amp; Bite moment and tag <strong style="color:var(--gold-lt);">@sitsipbite</strong> — we'd love to feature your photo here.</p>
+    <a href="feedback.html" class="btn-gold">Leave a Review</a>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <div class="lightbox-inner">
+      <button class="lightbox-close" id="lbClose" aria-label="Close image viewer">✕</button>
+      <button class="lightbox-nav lightbox-prev" id="lbPrev" aria-label="Previous image">‹</button>
+      <button class="lightbox-nav lightbox-next" id="lbNext" aria-label="Next image">›</button>
+      <div class="lightbox-img-wrap">
+        <img src="" alt="" id="lbImg" />
+      </div>
+      <div class="lightbox-caption">
+        <div class="lightbox-caption-cat" id="lbCat"></div>
+        <div class="lightbox-caption-title" id="lbTitle"></div>
+      </div>
+      <div class="lightbox-counter" id="lbCounter"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer role="contentinfo">
+    <div class="footer-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:0.65rem;font-family:var(--serif);font-size:1.1rem;color:var(--gold-lt);">
+          <svg width="32" height="32" viewBox="0 0 42 42" fill="none" aria-hidden="true">
+            <path d="M8 16 L10 34 Q10 36 13 36 L29 36 Q32 36 32 34 L34 16 Z" fill="#C8973A"/>
+            <path d="M32 20 Q40 20 40 26 Q40 32 32 32" stroke="#C8973A" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M16 11 Q17 8 16 5" stroke="#E8C07A" stroke-width="2" stroke-linecap="round"/>
+            <path d="M21 10 Q22 7 21 4" stroke="#E8C07A" stroke-width="2" stroke-linecap="round"/>
+            <path d="M26 11 Q27 8 26 5" stroke="#E8C07A" stroke-width="2" stroke-linecap="round"/>
+            <ellipse cx="21" cy="17" rx="10" ry="3" fill="#FAF6F0" opacity="0.8"/>
+          </svg>
+          Sit, Sip &amp; Bite
+        </div>
+        <p class="footer-brand-text">A cosy coffee haven in the heart of Gaborone, serving great coffee and fresh bites since 2024.</p>
+      </div>
+      <nav class="footer-col" aria-label="Footer navigation">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="feedback.html">Feedback</a></li>
+        </ul>
+      </nav>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="#">Plot 1234, Main Mall</a></li>
+          <li><a href="#">Gaborone, Botswana</a></li>
+          <li><a href="tel:+2671234567">+267 123 4567</a></li>
+          <li><a href="mailto:hello@sitsipbite.co.bw">hello@sitsipbite.co.bw</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Sit, Sip &amp; Bite. All rights reserved.</p>
+      <p>Made with ☕ in Gaborone, Botswana</p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile nav
+    document.getElementById('navToggle').addEventListener('click', function() {
+      const m = document.getElementById('navMenu');
+      const open = m.classList.toggle('open');
+      this.setAttribute('aria-expanded', String(open));
+    });
+
+    // Scroll reveal
+    const revObs = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 70);
+          revObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+
+    // FILTER
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const items = document.querySelectorAll('.gallery-item');
+    const noResults = document.getElementById('noResults');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.dataset.filter;
+        let visible = 0;
+        items.forEach(item => {
+          const match = cat === 'all' || item.dataset.cat === cat;
+          item.classList.toggle('hidden', !match);
+          if (match) visible++;
+        });
+        noResults.style.display = visible === 0 ? 'block' : 'none';
+      });
+    });
+
+    // LIGHTBOX
+    const lightbox  = document.getElementById('lightbox');
+    const lbImg     = document.getElementById('lbImg');
+    const lbCat     = document.getElementById('lbCat');
+    const lbTitle   = document.getElementById('lbTitle');
+    const lbCounter = document.getElementById('lbCounter');
+
+    let currentIdx = 0;
+    let visibleItems = [];
+
+    function openLightbox(item) {
+      visibleItems = Array.from(items).filter(i => !i.classList.contains('hidden'));
+      currentIdx = visibleItems.indexOf(item);
+      showSlide(currentIdx);
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('lbClose').focus();
+    }
+
+    function showSlide(idx) {
+      const item = visibleItems[idx];
+      if (!item) return;
+      const img = item.querySelector('img');
+      lbImg.src = img.src.replace('w=600', 'w=1200');
+      lbImg.alt = img.alt;
+      lbCat.textContent = item.dataset.cat.toUpperCase();
+      lbTitle.textContent = item.dataset.label;
+      lbCounter.textContent = `${idx + 1} / ${visibleItems.length}`;
+      currentIdx = idx;
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    items.forEach(item => {
+      item.addEventListener('click', () => openLightbox(item));
+      item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openLightbox(item); });
+    });
+
+    document.getElementById('lbClose').addEventListener('click', closeLightbox);
+    document.getElementById('lbPrev').addEventListener('click', () => showSlide((currentIdx - 1 + visibleItems.length) % visibleItems.length));
+    document.getElementById('lbNext').addEventListener('click', () => showSlide((currentIdx + 1) % visibleItems.length));
+
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft')  showSlide((currentIdx - 1 + visibleItems.length) % visibleItems.length);
+      if (e.key === 'ArrowRight') showSlide((currentIdx + 1) % visibleItems.length);
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sit, Sip & Bite – A cosy coffee shop in Gaborone, Botswana. Handcrafted coffee, fresh pastries and artisan sandwiches." />
+  <title>Home | Sit, Sip &amp; Bite</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================
+       DESIGN TOKENS
+       ============================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #120800;
+      --brown-dk:   #2E1503;
+      --brown-md:   #5A2D0C;
+      --brown-lt:   #8C5230;
+      --gold:       #C89040;
+      --gold-lt:    #E2B96A;
+      --gold-pale:  #F5DFA0;
+      --cream:      #F8F1E7;
+      --cream-lt:   #FDF9F4;
+      --parch:      #EDE0CB;
+      --rule:       rgba(90,45,12,0.15);
+
+      --serif:  'Fraunces', Georgia, serif;
+      --body:   'DM Sans', sans-serif;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--body);
+      background: var(--cream-lt);
+      color: var(--ink);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    img { display: block; max-width: 100%; }
+    a   { text-decoration: none; color: inherit; }
+    ul  { list-style: none; }
+
+    /* ============================================
+       CUSTOM CURSOR
+       ============================================ */
+    .cursor-dot {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s, width 0.2s, height 0.2s, background 0.2s;
+    }
+
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s var(--ease-out-expo), width 0.3s, height 0.3s, opacity 0.3s;
+      opacity: 0.6;
+    }
+
+    body:has(a:hover) .cursor-dot,
+    body:has(button:hover) .cursor-dot { width: 14px; height: 14px; background: var(--gold-lt); }
+    body:has(a:hover) .cursor-ring,
+    body:has(button:hover) .cursor-ring { width: 52px; height: 52px; opacity: 0.3; }
+
+    /* ============================================
+       NOISE TEXTURE OVERLAY
+       ============================================ */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9000;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 3rem;
+      transition: background 0.4s, box-shadow 0.4s;
+    }
+
+    nav.scrolled {
+      background: rgba(46, 21, 3, 0.97);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 30px rgba(0,0,0,0.3);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--gold-lt);
+      letter-spacing: 0.2px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 0.76rem;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(248,241,231,0.75);
+      position: relative;
+      padding-bottom: 3px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.3s var(--ease-out-expo);
+    }
+
+    .nav-links a:hover { color: var(--gold-lt); }
+    .nav-links a:hover::after,
+    .nav-links a.active::after { width: 100%; }
+    .nav-links a.active { color: var(--gold-lt); }
+
+    .nav-cta {
+      background: var(--gold);
+      color: var(--brown-dk) !important;
+      font-weight: 700 !important;
+      padding: 9px 20px !important;
+      border-radius: 50px;
+      letter-spacing: 1.5px !important;
+      transition: background 0.2s, transform 0.2s !important;
+    }
+
+    .nav-cta:hover { background: var(--gold-lt) !important; transform: translateY(-1px); }
+    .nav-cta::after { display: none !important; }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .nav-toggle span {
+      width: 24px; height: 2px;
+      background: var(--cream);
+      border-radius: 2px;
+      transition: all 0.3s;
+      display: block;
+    }
+
+    /* ============================================
+       HERO
+       ============================================ */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 700px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+    }
+
+    /* Left: text panel */
+    .hero-text {
+      position: relative;
+      z-index: 2;
+      background: var(--brown-dk);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 4rem 4rem 5rem;
+      overflow: hidden;
+    }
+
+    .hero-text::before {
+      content: '';
+      position: absolute;
+      bottom: -80px; right: -80px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,144,64,0.18), transparent 70%);
+    }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: slideRight 0.7s 0.2s var(--ease-out-expo) forwards;
+    }
+
+    .hero-eyebrow-line {
+      width: 32px; height: 1px;
+      background: var(--gold);
+    }
+
+    .hero-h1 {
+      font-family: var(--serif);
+      font-size: clamp(3.2rem, 5vw, 5.2rem);
+      font-weight: 300;
+      color: #fff;
+      line-height: 1.05;
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: slideRight 0.8s 0.35s var(--ease-out-expo) forwards;
+    }
+
+    .hero-h1 em {
+      font-style: italic;
+      color: var(--gold-lt);
+      font-weight: 700;
+    }
+
+    .hero-h1 .line-indent {
+      display: block;
+      padding-left: 3rem;
+    }
+
+    .hero-desc {
+      font-size: 0.97rem;
+      color: rgba(248,241,231,0.6);
+      line-height: 1.75;
+      max-width: 340px;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+      opacity: 0;
+      animation: slideRight 0.8s 0.5s var(--ease-out-expo) forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      opacity: 0;
+      animation: slideRight 0.8s 0.65s var(--ease-out-expo) forwards;
+    }
+
+    .btn-gold {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--gold);
+      color: var(--brown-dk);
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 14px 28px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-gold:hover {
+      background: var(--gold-lt);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(200,144,64,0.45);
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: transparent;
+      color: rgba(248,241,231,0.7);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .btn-ghost:hover { color: var(--gold-lt); }
+
+    .btn-ghost svg { transition: transform 0.2s; }
+    .btn-ghost:hover svg { transform: translateX(4px); }
+
+    /* Right: image panel */
+    .hero-img {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.06);
+      animation: zoomOut 1.4s 0.1s var(--ease-out-expo) forwards;
+    }
+
+    .hero-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(46,21,3,0.5) 0%, transparent 40%);
+    }
+
+    /* Floating badge */
+    .hero-badge {
+      position: absolute;
+      bottom: 2.5rem;
+      left: -1.5rem;
+      z-index: 3;
+      background: var(--gold);
+      color: var(--brown-dk);
+      font-family: var(--serif);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 10px 20px 10px 28px;
+      border-radius: 0 50px 50px 0;
+      box-shadow: 4px 4px 20px rgba(0,0,0,0.25);
+      animation: slideRight 0.7s 1s var(--ease-out-expo) both;
+      white-space: nowrap;
+    }
+
+    /* Scroll nudge */
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: rgba(248,241,231,0.45);
+      font-size: 0.65rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      animation: fadeIn 1s 1.2s both;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollPulse 2s infinite;
+    }
+
+    /* ============================================
+       MARQUEE STRIP
+       ============================================ */
+    .marquee-strip {
+      background: var(--gold);
+      overflow: hidden;
+      padding: 12px 0;
+      position: relative;
+      z-index: 3;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 0;
+      animation: marquee 22s linear infinite;
+      width: max-content;
+    }
+
+    .marquee-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0 2.5rem;
+      font-family: var(--serif);
+      font-size: 0.9rem;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--brown-dk);
+      white-space: nowrap;
+    }
+
+    .marquee-dot {
+      width: 5px; height: 5px;
+      background: var(--brown-md);
+      border-radius: 50%;
+      opacity: 0.5;
+      flex-shrink: 0;
+    }
+
+    /* ============================================
+       ABOUT / STORY SECTION
+       ============================================ */
+    .story {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 600px;
+    }
+
+    .story-img {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .story-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s var(--ease-out-expo);
+    }
+
+    .story-img:hover img { transform: scale(1.04); }
+
+    .story-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(46,21,3,0.6) 0%, transparent 50%);
+    }
+
+    .story-text {
+      background: var(--cream);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem;
+    }
+
+    .eyebrow {
+      font-size: 0.67rem;
+      font-weight: 600;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+
+    .story-text h2 {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+      font-weight: 300;
+      color: var(--brown-dk);
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+    }
+
+    .story-text h2 strong {
+      font-weight: 700;
+      font-style: italic;
+    }
+
+    .story-text p {
+      font-size: 0.95rem;
+      color: var(--brown-lt);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+      max-width: 420px;
+    }
+
+    .story-text .link-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--brown-md);
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 2px;
+      transition: color 0.2s, gap 0.2s;
+    }
+
+    .story-text .link-arrow:hover { color: var(--gold); gap: 0.9rem; }
+
+    /* ============================================
+       STATS ROW
+       ============================================ */
+    .stats-row {
+      background: var(--brown-dk);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .stat-item {
+      padding: 3rem 2rem;
+      text-align: center;
+      border-right: 1px solid rgba(248,241,231,0.08);
+      transition: background 0.3s;
+    }
+
+    .stat-item:last-child { border-right: none; }
+    .stat-item:hover { background: rgba(200,144,64,0.08); }
+
+    .stat-number {
+      font-family: var(--serif);
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--gold-lt);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(248,241,231,0.45);
+    }
+
+    /* ============================================
+       MENU PREVIEW
+       ============================================ */
+    .menu-preview {
+      padding: 6rem 5rem;
+      background: var(--cream-lt);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 3.5rem;
+      gap: 2rem;
+    }
+
+    .section-header-left {}
+
+    .section-header h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3vw, 2.8rem);
+      font-weight: 300;
+      color: var(--brown-dk);
+      line-height: 1.1;
+    }
+
+    .section-header h2 em { font-style: italic; font-weight: 700; color: var(--brown-md); }
+
+    .section-header .see-all {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 10px 22px;
+      border-radius: 50px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .section-header .see-all:hover {
+      background: var(--gold);
+      color: var(--brown-dk);
+    }
+
+    /* Bento-style grid */
+    .menu-bento {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      grid-template-rows: 260px 260px;
+      gap: 1.2rem;
+    }
+
+    .bento-card {
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .bento-card.tall { grid-row: span 2; }
+
+    .bento-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s var(--ease-out-expo);
+    }
+
+    .bento-card:hover img { transform: scale(1.07); }
+
+    .bento-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(18,8,0,0.82) 0%, rgba(18,8,0,0.1) 55%, transparent 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.6rem;
+      transition: background 0.3s;
+    }
+
+    .bento-card:hover .bento-overlay {
+      background: linear-gradient(to top, rgba(18,8,0,0.9) 0%, rgba(18,8,0,0.2) 55%, transparent 100%);
+    }
+
+    .bento-tag {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+
+    .bento-name {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+
+    .bento-card.tall .bento-name { font-size: 2rem; }
+
+    .bento-price {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      color: var(--gold-lt);
+      font-weight: 600;
+    }
+
+    .bento-arrow {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      width: 36px; height: 36px;
+      background: rgba(248,241,231,0.12);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.25s, transform 0.25s;
+    }
+
+    .bento-card:hover .bento-arrow {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* ============================================
+       TESTIMONIAL
+       ============================================ */
+    .testimonial {
+      background: var(--parch);
+      padding: 6rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .testimonial::before {
+      content: '\201C';
+      position: absolute;
+      top: -1.5rem;
+      left: 3rem;
+      font-family: var(--serif);
+      font-size: 18rem;
+      color: rgba(90,45,12,0.06);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .testimonial-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .testimonial blockquote {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--brown-dk);
+      line-height: 1.4;
+      margin-bottom: 2rem;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+    }
+
+    .author-line { width: 30px; height: 1px; background: var(--gold); }
+
+    .author-name {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--brown-md);
+    }
+
+    .stars {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      margin-bottom: 1.5rem;
+      color: var(--gold);
+      font-size: 1rem;
+    }
+
+    /* ============================================
+       HOURS & LOCATION SPLIT
+       ============================================ */
+    .info-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .info-panel {
+      padding: 5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .info-panel.dark {
+      background: var(--brown-dk);
+      color: var(--cream);
+    }
+
+    .info-panel.light {
+      background: var(--cream);
+      color: var(--ink);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .info-panel h3 {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 300;
+      margin-bottom: 2rem;
+      line-height: 1.1;
+    }
+
+    .info-panel.dark h3 { color: var(--gold-lt); }
+    .info-panel.light h3 { color: var(--brown-dk); }
+
+    .hours-table { width: 100%; }
+
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid rgba(248,241,231,0.1);
+    }
+
+    .hours-row:last-child { border-bottom: none; }
+
+    .hours-day {
+      font-size: 0.9rem;
+      color: rgba(248,241,231,0.65);
+      font-weight: 300;
+    }
+
+    .hours-time {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gold-lt);
+    }
+
+    .location-map-mock {
+      width: 100%;
+      height: 220px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .location-map-mock img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: sepia(30%) saturate(0.8);
+    }
+
+    .location-details p {
+      font-size: 0.9rem;
+      color: var(--brown-lt);
+      margin-bottom: 0.4rem;
+    }
+
+    .location-details strong { color: var(--brown-md); }
+
+    /* ============================================
+       INSTAGRAM / GALLERY STRIP
+       ============================================ */
+    .gallery-strip {
+      padding: 5rem;
+      background: var(--cream-lt);
+    }
+
+    .gallery-strip .section-header { margin-bottom: 2rem; }
+
+    .gallery-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.8rem;
+    }
+
+    .gallery-cell {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .gallery-cell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s var(--ease-out-expo);
+    }
+
+    .gallery-cell:hover img { transform: scale(1.1); }
+
+    .gallery-cell-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(46,21,3,0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s;
+    }
+
+    .gallery-cell:hover .gallery-cell-overlay { background: rgba(46,21,3,0.38); }
+
+    .gallery-cell-icon {
+      color: #fff;
+      font-size: 1.4rem;
+      opacity: 0;
+      transform: scale(0.7);
+      transition: opacity 0.25s, transform 0.25s;
+    }
+
+    .gallery-cell:hover .gallery-cell-icon { opacity: 1; transform: scale(1); }
+
+    /* ============================================
+       CTA BANNER
+       ============================================ */
+    .cta-banner {
+      position: relative;
+      overflow: hidden;
+      padding: 6rem 5rem;
+      text-align: center;
+      background: var(--brown-md);
+    }
+
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1400&q=80');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.15;
+    }
+
+    .cta-banner-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .cta-banner h2 {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 1.2rem;
+    }
+
+    .cta-banner h2 em { font-style: italic; color: var(--gold-lt); font-weight: 700; }
+
+    .cta-banner p {
+      font-size: 0.95rem;
+      color: rgba(248,241,231,0.6);
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+
+    .cta-banner-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-cream {
+      display: inline-block;
+      background: var(--cream);
+      color: var(--brown-dk);
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 14px 30px;
+      border-radius: 50px;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-cream:hover { background: #fff; transform: translateY(-2px); }
+
+    .btn-outline-cream {
+      display: inline-block;
+      background: transparent;
+      color: rgba(248,241,231,0.8);
+      font-weight: 500;
+      font-size: 0.78rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 14px 30px;
+      border-radius: 50px;
+      border: 1px solid rgba(248,241,231,0.3);
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+
+    .btn-outline-cream:hover {
+      border-color: rgba(248,241,231,0.7);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    footer {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 4rem 5rem 2rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(248,241,231,0.07);
+    }
+
+    .footer-brand p {
+      font-size: 0.87rem;
+      color: rgba(248,241,231,0.45);
+      line-height: 1.7;
+      margin-top: 1rem;
+      max-width: 260px;
+    }
+
+    .footer-col h4 {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gold-lt);
+      margin-bottom: 1.2rem;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 0.6rem;
+    }
+
+    .footer-col ul li a {
+      font-size: 0.87rem;
+      color: rgba(248,241,231,0.45);
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover { color: var(--gold-lt); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: rgba(248,241,231,0.25);
+    }
+
+    /* ============================================
+       SCROLL REVEAL
+       ============================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s var(--ease-out-expo), transform 0.65s var(--ease-out-expo);
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ============================================
+       KEYFRAMES
+       ============================================ */
+    @keyframes slideRight {
+      from { opacity: 0; transform: translateX(-24px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes zoomOut {
+      from { transform: scale(1.06); }
+      to   { transform: scale(1); }
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50%       { opacity: 1;   transform: scaleY(1.3); }
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 1024px) {
+      .menu-bento { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .bento-card.tall { grid-row: span 1; }
+      .gallery-row { grid-template-columns: repeat(3, 1fr); }
+      .gallery-row .gallery-cell:nth-child(n+4) { display: none; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 68px; left: 0; right: 0; background: var(--brown-dk); padding: 1.5rem 2rem; gap: 1.2rem; }
+      .nav-links.open { display: flex; }
+      .nav-toggle { display: flex; }
+
+      .hero { grid-template-columns: 1fr; }
+      .hero-text { padding: 7rem 2rem 3rem; min-height: 60vh; }
+      .hero-img { height: 45vw; }
+      .hero-badge { left: 0; border-radius: 0 50px 50px 0; }
+
+      .story { grid-template-columns: 1fr; }
+      .story-img { height: 300px; }
+      .story-text { padding: 3rem 2rem; }
+
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .stat-item:nth-child(2) { border-right: none; }
+
+      .menu-preview, .testimonial, .gallery-strip, .cta-banner { padding: 4rem 2rem; }
+
+      .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .menu-bento { grid-template-columns: 1fr; }
+
+      .info-split { grid-template-columns: 1fr; }
+      .info-panel { padding: 3rem 2rem; }
+
+      .gallery-row { grid-template-columns: repeat(2, 1fr); }
+      .gallery-row .gallery-cell:nth-child(n+3) { display: none; }
+      .gallery-row .gallery-cell:nth-child(-n+2) { display: block; }
+
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      footer { padding: 3rem 2rem 2rem; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+
+      body { cursor: auto; }
+      .cursor-dot, .cursor-ring { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+     <ul>
+         <li><a href="./homepage.html">Home</a></li>
+         <li><a href="./menu.html">Menu</a></li>
+         <li><a href="./gallery.html">Gallery></a></li>
+         <li><a href="./aboutus.html">About Us</a></li>
+         <li><a href="./feedback.html">feedback</a></li>
+     </ul>
+  </nav>
+
+
+
+  <!-- Custom cursors -->
+  <div class="cursor-dot"  id="cursorDot"  aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+  <!-- ============================================
+       NAV
+       ============================================ -->
+  <nav id="mainNav" role="navigation" aria-label="Main navigation">
+    <div class="nav-logo">
+      <svg width="34" height="34" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M8 16 L10 34 Q10 36 13 36 L29 36 Q32 36 32 34 L34 16 Z" fill="#C8973A"/>
+        <path d="M32 20 Q40 20 40 26 Q40 32 32 32" stroke="#C8973A" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M16 11 Q17 8 16 5" stroke="#E8C07A" stroke-width="2" stroke-linecap="round"/>
+        <path d="M21 10 Q22 7 21 4" stroke="#E8C07A" stroke-width="2" stroke-linecap="round"/>
+        <path d="M26 11 Q27 8 26 5" stroke="#E8C07A" stroke-width="2" stroke-linecap="round"/>
+        <ellipse cx="21" cy="17" rx="10" ry="3" fill="#FAF6F0" opacity="0.8"/>
+        <circle cx="21" cy="17" r="2" fill="#8B5E3C" opacity="0.4"/>
+      </svg>
+      Sit, Sip &amp; Bite
+    </div>
+
+    <ul class="nav-links" id="navLinks" role="list">
+      <li><a href="home.html" class="active">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="aboutus.html#about">About</a></li>
+      <li><a href="gallery.html#gallery">Gallery</a></li>
+      <li><a href="feedback.html">Feedback</a></li>
+      <li><a href="index.html#contact" class="nav-cta">Reserve a Table</a></li>
+    </ul>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ============================================
+       HERO
+       ============================================ -->
+  <section class="hero" aria-labelledby="hero-title">
+
+    <div class="hero-text">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-line"></div>
+        Est. 2024 · Gaborone, Botswana
+      </div>
+      <h1 class="hero-h1" id="hero-title">
+        Where every
+        <em>sip</em>
+        <span class="line-indent">tells a story.</span>
+      </h1>
+      <p class="hero-desc">
+        Handcrafted coffee, oven-fresh pastries, and generous sandwiches — served in a corner of Gaborone that feels like a warm embrace.
+      </p>
+      <div class="hero-actions">
+        <a href="menu.html" class="btn-gold">
+          View Menu
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="index.html#about" class="btn-ghost">
+          Our Story
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-img" role="img" aria-label="A warm cup of coffee with latte art on a wooden table">
+      <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=85"
+           alt="Cosy café interior with warm lighting and a cup of coffee"
+           width="900" height="900" fetchpriority="high" />
+      <div class="hero-badge" aria-hidden="true">☕ Fresh Coffee · Daily Bakes</div>
+    </div>
+
+    <div class="hero-scroll" aria-hidden="true">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+
+  </section>
+
+  <!-- ============================================
+       MARQUEE STRIP
+       ============================================ -->
+  <div class="marquee-strip" aria-hidden="true" role="presentation">
+    <div class="marquee-track">
+      <!-- Duplicated for seamless loop -->
+      <span class="marquee-item">Latte<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Cappuccino<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Espresso<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Butter Croissant<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Club Sandwich<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Almond Croissant<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Iced Latte<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Tuna Melt<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Mocha<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Veggie Delight<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Latte<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Cappuccino<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Espresso<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Butter Croissant<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Club Sandwich<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Almond Croissant<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Iced Latte<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Tuna Melt<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Mocha<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Veggie Delight<span class="marquee-dot"></span></span>
+    </div>
+  </div>
+
+  <!-- ============================================
+       STORY SECTION
+       ============================================ -->
+  <section class="story" aria-labelledby="story-title">
+    <div class="story-img reveal">
+      <img src="https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=900&q=80"
+           alt="Barista carefully pouring a latte in a warm café setting"
+           width="700" height="600" loading="lazy" />
+      <div class="story-img-overlay" aria-hidden="true"></div>
+    </div>
+    <div class="story-text">
+      <p class="eyebrow reveal">Our Story</p>
+      <h2 class="reveal reveal-delay-1">
+        Coffee crafted<br>with <strong>intention</strong>
+      </h2>
+      <p class="reveal reveal-delay-2">
+        Sit, Sip &amp; Bite was born from a simple belief — that a great cup of coffee deserves a great space. We opened in 2024 right in the heart of Gaborone, bringing together premium single-origin beans, hand-laminated pastries, and generous sandwiches made fresh every day.
+      </p>
+      <p class="reveal reveal-delay-3">
+        Every detail matters here: the temperature of the milk, the crunch of the croissant, the warmth of the welcome. We're not just a café — we're your corner.
+      </p>
+      <a href="index.html#about" class="link-arrow reveal reveal-delay-4">
+        Read our full story
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================
+       STATS
+       ============================================ -->
+  <div class="stats-row" aria-label="Key facts about Sit Sip and Bite">
+    <div class="stat-item reveal">
+      <div class="stat-number">6+</div>
+      <div class="stat-label">Coffee Varieties</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <div class="stat-number">13</div>
+      <div class="stat-label">Menu Items</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <div class="stat-number">7AM</div>
+      <div class="stat-label">Opens Daily</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <div class="stat-number">100%</div>
+      <div class="stat-label">Fresh &amp; Local</div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       MENU PREVIEW
+       ============================================ -->
+  <section class="menu-preview" aria-labelledby="menu-preview-title">
+    <div class="section-header reveal">
+      <div class="section-header-left">
+        <p class="eyebrow">What We Serve</p>
+        <h2 id="menu-preview-title">Crafted with <em>care</em>,<br>served with warmth</h2>
+      </div>
+      <a href="menu.html" class="see-all">
+        Full Menu
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="menu-bento reveal">
+
+      <!-- Tall featured: Latte -->
+      <a href="menu.html" class="bento-card tall" aria-label="View Signature Latte on menu">
+        <img src="https://images.unsplash.com/photo-1545665277-5937489579f2?w=700&q=80"
+             alt="Signature latte with beautiful latte art in a ceramic cup"
+             width="500" height="520" loading="lazy" />
+        <div class="bento-overlay">
+          <p class="bento-tag">Coffee · House Special</p>
+          <p class="bento-name">Signature<br>Latte</p>
+          <p class="bento-price">BWP 32</p>
+        </div>
+        <div class="bento-arrow" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <!-- Croissant -->
+      <a href="menu.html" class="bento-card" aria-label="View Butter Croissant on menu">
+        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&q=80"
+             alt="Golden butter croissants fresh from the oven"
+             width="400" height="260" loading="lazy" />
+        <div class="bento-overlay">
+          <p class="bento-tag">Pastry</p>
+          <p class="bento-name">Butter Croissant</p>
+          <p class="bento-price">BWP 22</p>
+        </div>
+        <div class="bento-arrow" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <!-- Cappuccino -->
+      <a href="menu.html" class="bento-card" aria-label="View Cappuccino on menu">
+        <img src="https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=600&q=80"
+             alt="Perfectly made cappuccino with thick foam"
+             width="400" height="260" loading="lazy" />
+        <div class="bento-overlay">
+          <p class="bento-tag">Coffee</p>
+          <p class="bento-name">Cappuccino</p>
+          <p class="bento-price">BWP 30</p>
+        </div>
+        <div class="bento-arrow" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <!-- Club Sandwich -->
+      <a href="menu.html" class="bento-card" aria-label="View Club Sandwich on menu">
+        <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600&q=80"
+             alt="Club sandwich stacked high on a wooden board"
+             width="400" height="260" loading="lazy" />
+        <div class="bento-overlay">
+          <p class="bento-tag">Sandwich · Most Ordered</p>
+          <p class="bento-name">Club Sandwich</p>
+          <p class="bento-price">BWP 55</p>
+        </div>
+        <div class="bento-arrow" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <!-- Espresso -->
+      <a href="menu.html" class="bento-card" aria-label="View Espresso on menu">
+        <img src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=600&q=80"
+             alt="Rich espresso shot in a small white cup"
+             width="400" height="260" loading="lazy" />
+        <div class="bento-overlay">
+          <p class="bento-tag">Coffee</p>
+          <p class="bento-name">Espresso</p>
+          <p class="bento-price">BWP 18</p>
+        </div>
+        <div class="bento-arrow" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ============================================
+       TESTIMONIAL
+       ============================================ -->
+  <section class="testimonial" aria-labelledby="testimonial-title">
+    <div class="testimonial-inner reveal">
+      <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+      <blockquote id="testimonial-title">
+        "The best flat white in Gaborone, and the croissants are absolutely divine. I come in every morning before work — it's my daily ritual and honestly the highlight of my day."
+      </blockquote>
+      <div class="testimonial-author">
+        <div class="author-line" aria-hidden="true"></div>
+        <span class="author-name">A Happy Regular · Gaborone</span>
+        <div class="author-line" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       HOURS & LOCATION
+       ============================================ -->
+  <section class="info-split" aria-label="Opening hours and location">
+    <div class="info-panel dark reveal">
+      <h3>Opening<br>Hours</h3>
+      <div class="hours-table" role="table" aria-label="Opening hours">
+        <div class="hours-row" role="row">
+          <span class="hours-day" role="cell">Monday – Friday</span>
+          <span class="hours-time" role="cell">7:00 AM – 8:00 PM</span>
+        </div>
+        <div class="hours-row" role="row">
+          <span class="hours-day" role="cell">Saturday</span>
+          <span class="hours-time" role="cell">8:00 AM – 9:00 PM</span>
+        </div>
+        <div class="hours-row" role="row">
+          <span class="hours-day" role="cell">Sunday</span>
+          <span class="hours-time" role="cell">9:00 AM – 6:00 PM</span>
+        </div>
+        <div class="hours-row" role="row">
+          <span class="hours-day" role="cell">Public Holidays</span>
+          <span class="hours-time" role="cell">10:00 AM – 5:00 PM</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-panel light reveal reveal-delay-2">
+      <h3>Find Us in<br>Gaborone</h3>
+      <div class="location-map-mock">
+        <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80"
+             alt="Outside view of Sit Sip and Bite café entrance"
+             width="500" height="220" loading="lazy" />
+      </div>
+      <div class="location-details">
+        <p><strong>Plot 1234, Main Mall</strong></p>
+        <p>Gaborone, Botswana</p>
+        <p style="margin-top:0.5rem;">📞 +267 123 4567</p>
+        <p>✉️ hello@sitsipbite.co.bw</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       GALLERY STRIP
+       ============================================ -->
+  <section class="gallery-strip" aria-labelledby="gallery-title">
+    <div class="section-header reveal">
+      <div>
+        <p class="eyebrow">Gallery</p>
+        <h2 id="gallery-title">Moments &amp; <em>Memories</em></h2>
+      </div>
+      <a href="index.html#gallery" class="see-all">
+        View All
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="gallery-row reveal">
+      <figure class="gallery-cell">
+        <img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=400&q=80"
+             alt="Warm cosy café interior with wooden furniture and soft lighting"
+             width="300" height="300" loading="lazy" />
+        <div class="gallery-cell-overlay"><span class="gallery-cell-icon">+</span></div>
+        <figcaption class="visually-hidden">Café interior</figcaption>
+      </figure>
+
+      <figure class="gallery-cell">
+        <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?w=400&q=80"
+             alt="Latte with intricate latte art in a white cup"
+             width="300" height="300" loading="lazy" />
+        <div class="gallery-cell-overlay"><span class="gallery-cell-icon">+</span></div>
+        <figcaption class="visually-hidden">Latte art</figcaption>
+      </figure>
+
+      <figure class="gallery-cell">
+        <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=400&q=80"
+             alt="Premium Arabica coffee beans close up"
+             width="300" height="300" loading="lazy" />
+        <div class="gallery-cell-overlay"><span class="gallery-cell-icon">+</span></div>
+        <figcaption class="visually-hidden">Coffee beans</figcaption>
+      </figure>
+
+      <figure class="gallery-cell">
+        <img src="https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?w=400&q=80"
+             alt="Chocolate croissant cut open showing dark chocolate filling"
+             width="300" height="300" loading="lazy" />
+        <div class="gallery-cell-overlay"><span class="gallery-cell-icon">+</span></div>
+        <figcaption class="visually-hidden">Chocolate croissant</figcaption>
+      </figure>
+
+      <figure class="gallery-cell">
+        <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=400&q=80"
+             alt="Evening café ambience with warm lighting"
+             width="300" height="300" loading="lazy" />
+        <div class="gallery-cell-overlay"><span class="gallery-cell-icon">+</span></div>
+        <figcaption class="visually-hidden">Evening ambience</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============================================
+       CTA BANNER
+       ============================================ -->
+  <section class="cta-banner" aria-labelledby="cta-title">
+    <div class="cta-banner-inner reveal">
+      <h2 id="cta-title">Come <em>sit</em> with us<br>today</h2>
+      <p>Whether it's your first visit or your hundredth, there's always a warm cup and a friendly face waiting for you at Sit, Sip &amp; Bite.</p>
+      <div class="cta-banner-btns">
+        <a href="menu.html" class="btn-cream">Explore the Menu</a>
+        <a href="index.html#contact" class="btn-outline-cream">Get in Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer role="contentinfo">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo" style="color:var(--gold-lt);font-family:var(--serif);font-size:1.2rem;font-weight:700;display:flex;align-items:center;gap:0.6rem;">
+          <svg width="30" height="30" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M8 16 L10 34 Q10 36 13 36 L29 36 Q32 36 32 34 L34 16 Z" fill="#C8973A"/>
+            <path d="M32 20 Q40 20 40 26 Q40 32 32 32" stroke="#C8973A" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <ellipse cx="21" cy="17" rx="10" ry="3" fill="#FAF6F0" opacity="0.8"/>
+          </svg>
+          Sit, Sip &amp; Bite
+        </div>
+        <p>A cosy coffee haven in the heart of Gaborone. Every cup brewed with care, every bite made fresh.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="index.html#about">About Us</a></li>
+          <li><a href="index.html#gallery">Gallery</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Menu</h4>
+        <ul>
+          <li><a href="menu.html">Coffee</a></li>
+          <li><a href="menu.html">Pastries &amp; Bakes</a></li>
+          <li><a href="menu.html">Sandwiches</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="#">Plot 1234, Main Mall</a></li>
+          <li><a href="#">Gaborone, Botswana</a></li>
+          <li><a href="tel:+2671234567">+267 123 4567</a></li>
+          <li><a href="mailto:hello@sitsipbite.co.bw">hello@sitsipbite.co.bw</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2024 Sit, Sip &amp; Bite. All rights reserved.</p>
+      <p>Made with ☕ in Gaborone, Botswana</p>
+    </div>
+  </footer>
+
+  <!-- ============================================
+       SCRIPTS
+       ============================================ -->
+  <script>
+    // Custom cursor
+    const dot  = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    let mouseX = 0, mouseY = 0;
+    let ringX  = 0, ringY  = 0;
+
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX; mouseY = e.clientY;
+      dot.style.left  = mouseX + 'px';
+      dot.style.top   = mouseY + 'px';
+    });
+
+    (function animateRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      ring.style.left = ringX + 'px';
+      ring.style.top  = ringY + 'px';
+      requestAnimationFrame(animateRing);
+    })();
+
+    // Sticky nav background
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Mobile nav toggle
+    const toggle   = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => revealObs.observe(el));
+  </script>
+
+</body>
+</html>
